@@ -9,9 +9,9 @@ output: html_document
 
 | **Time**   | **Wednesday**                          | **Thursday**                      | **Friday**                   |
 | ------ | ---------------------------------- | ----------------------------- | ------------------------- |
-|9:00am  | Introduction to `R Studio`         | Understanding Data Types in `R` | Advanced Programming Using `magrittr`   |  
+|9:00am  | Introduction to `R Studio` & Getting Data Into `R` | Understanding Data Types in `R` | Advanced Programming Using `magrittr`   |  
 |10:30am | *Morning Tea*                      | *Morning Tea*                   | *Morning Tea*                    |
-|11:00am | Manipulating Data Using `dplyr`        | Writing Functions in `R`        | `R` In the Genomics Era  |
+|11:00am | Manipulating Data Using `dplyr` and `reshape2` | Writing Functions in `R`        | `R` In the Genomics Era  |
 |12:30pm | *Lunch*                            | *Lunch*                         | *Lunch*                          |
 |1:30pm  | Data Visualisation Using `ggplot2` | Getting the Most Out Of Functions | Statistical Analysis Using R             |
 |3:00pm  | *Coffee Break*                     | *Coffee Break*                | *Coffee Break*                 |
