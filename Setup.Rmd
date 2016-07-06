@@ -5,18 +5,6 @@ date: "July 20-22, 2016"
 output: html_document
 ---
 
-## Provisional Timetable
-
-| **Time**   | **Wednesday**                          | **Thursday**                      | **Friday**                   |
-| ------ | ---------------------------------- | ----------------------------- | ------------------------- |
-|9:00am  | Introduction to `R Studio` <br> Data Import In R  | Understanding Data Types in `R` | `R` In The Genomics Era <br> (The Bioconductor Project) |  
-|10:30am | *Morning Tea*                      | *Morning Tea*                   | *Morning Tea*                    |
-|11:00am | Manipulating Data Using `dplyr` and `reshape2` | Writing Functions in `R`        | `R` In the Genomics Era <br> (The Bioconductor Project)  |
-|12:30pm | *Lunch*                            | *Lunch*                         | *Lunch*                          |
-|1:30pm  | Data Visualisation Using `ggplot2` <br> Making Publication Quality Images | Getting the Most Out Of Functions <br> Parallel Processing | Basic Statistical Techniques Using `R`             |
-|3:00pm  | *Coffee Break*                     | *Coffee Break*                | *Coffee Break*                 |
-|3:30pm  | Writing Reports Using `R Markdown` | Running `R Studio` In The Cloud | Mixed-Effects Modelling |
-
 # Computer Setup
 
 ## R
