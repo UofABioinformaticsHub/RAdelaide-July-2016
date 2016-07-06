@@ -189,19 +189,19 @@ $(document).ready(function () {
 <h1>Computer Setup</h1>
 <div id="r" class="section level2">
 <h2>R</h2>
-<p>Please ensure you have the latest version of <code>R</code>. The current version (<code>R-3.3.0</code>) is available at <a href="https://www.cran.r-project.org/" class="uri">https://www.cran.r-project.org/</a> Install this before installing `R Studio</p>
+<p>Please ensure you have the latest version of <code>R</code>. The current version (<code>R-3.3.1</code>) is available at <a href="http://cran.ms.unimelb.edu.au/" class="uri">http://cran.ms.unimelb.edu.au/</a> Install this before installing <code>R Studio</code></p>
 </div>
 <div id="r-studio" class="section level2">
 <h2>R Studio</h2>
-<p>Please ensure you have the latest version of <code>R Studio</code> The current version(<code>RStudio 0.99.902</code>) is available at <a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a></p>
+<p>Please ensure you have the latest version of <code>R Studio</code> The current version(<code>RStudio 0.99.902</code>) is available at <a href="https://www.rstudio.com/products/rstudio/download/">https://www.rstudio.com/</a></p>
 <p>R Studio will usually automatically detect your most recent version of R and will use this by default.</p>
 </div>
 <div id="r-packages" class="section level2">
 <h2>R Packages</h2>
-<p>To install all required packages, please execute the following commands in R:</p>
+<p>To install all required packages, please execute the following commands in R (You can copy &amp; paste both lines if you’d like):</p>
 <pre class="r"><code>source(&quot;https://bioconductor.org/biocLite.R&quot;)
-biocLite(c(&quot;dlpyr&quot;, &quot;reshape2&quot;, &quot;readr&quot;, &quot;readxl&quot;, &quot;ggplot2&quot;, &quot;knitr&quot;, &quot;parallel&quot;, &quot;snow&quot;, &quot;biomaRt&quot;, &quot;GenomicRanges&quot;, &quot;nlme&quot;, &quot;lme4&quot;, &quot;lattice&quot;, &quot;MASS&quot;))</code></pre>
-<p>If having problems with the installation, please try:</p>
+biocLite(c(&quot;dlpyr&quot;, &quot;reshape2&quot;, &quot;readr&quot;, &quot;readxl&quot;, &quot;ggplot2&quot;, &quot;knitr&quot;, &quot;parallel&quot;, &quot;snow&quot;, &quot;biomaRt&quot;, &quot;GenomicRanges&quot;, &quot;nlme&quot;, &quot;lme4&quot;, &quot;lattice&quot;, &quot;MASS&quot;, &quot;rmarkdown&quot;, &quot;lmerTest&quot;, &quot;car&quot;))</code></pre>
+<p>If you’re having problems with the installation, please try:</p>
 <pre class="r"><code>biocValid(fix = TRUE)</code></pre>
 </div>
 </div>
@@ -211,7 +211,7 @@ biocLite(c(&quot;dlpyr&quot;, &quot;reshape2&quot;, &quot;readr&quot;, &quot;rea
 <ol style="list-style-type: decimal">
 <li>Create a new folder <code>C:\R</code><br />
 </li>
-<li>Create a new <code>Environment Variable</code> (see below) called <code>R_LIBS_USER</code> and give it the value <code>C:\R</code></li>
+<li>Create a new <code>Environment Variable</code> (see below) called <code>R_LIBS_USER</code> and give it the value <code>C:\R</code>. The steps below can guide you through this.</li>
 </ol>
 <div id="windows-10-and-windows-8" class="section level2">
 <h2>Windows 10 and Windows 8</h2>
