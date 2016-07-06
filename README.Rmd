@@ -1,0 +1,73 @@
+---
+title: "R-Adelaide Workshop"
+author: 'University of Adelaide, Bioinformatics Hub'
+date: "July 20-22, 2016"
+output: html_document
+---
+
+## Provisional Timetable
+
+| **Time**   | **Wednesday**                          | **Thursday**                      | **Friday**                   |
+| ------ | ---------------------------------- | ----------------------------- | ------------------------- |
+|9:00am  | Introduction to `R Studio` <br> Data Import In R  | Understanding Data Types in `R` | `R` In The Genomics Era <br> (The Bioconductor Project) |  
+|10:30am | *Morning Tea*                      | *Morning Tea*                   | *Morning Tea*                    |
+|11:00am | Manipulating Data Using `dplyr` and `reshape2` | Writing Functions in `R`        | `R` In the Genomics Era <br> (The Bioconductor Project)  |
+|12:30pm | *Lunch*                            | *Lunch*                         | *Lunch*                          |
+|1:30pm  | Data Visualisation Using `ggplot2` <br> Making Publication Quality Images | Getting the Most Out Of Functions <br> Parallel Processing | Basic Statistical Techniques Using `R`             |
+|3:00pm  | *Coffee Break*                     | *Coffee Break*                | *Coffee Break*                 |
+|3:30pm  | Writing Reports Using `R Markdown` | Running `R Studio` In The Cloud | Mixed-Effects Modelling |
+
+# Computer Setup
+
+## R
+
+Please ensure you have the latest version of `R`.
+The current version (`R-3.3.1`) is available at http://cran.ms.unimelb.edu.au/
+Install this before installing `R Studio`
+
+
+## R Studio
+Please ensure you have the latest version of `R Studio`
+The current version(`RStudio 0.99.902`) is available at [https://www.rstudio.com/](https://www.rstudio.com/products/rstudio/download/)
+
+R Studio will usually automatically detect your most recent version of R and will use this by default.
+
+## R Packages
+To install all required packages, please execute the following commands in R (You can copy & paste both lines if you'd like):
+```{r, eval=FALSE}
+source("https://bioconductor.org/biocLite.R")
+biocLite(c("dlpyr", "reshape2", "readr", "readxl", "ggplot2", "knitr", "parallel", "snow", "biomaRt", "GenomicRanges", "nlme", "lme4", "lattice", "MASS", "rmarkdown", "lmerTest", "car"))
+```
+
+If you're having problems with the installation, please try:
+```{r, eval=FALSE}
+biocValid(fix = TRUE)
+```
+
+
+# Notes for Windows Users
+
+Installing the package `dplyr` can be problematic on University laptops running Windows.
+If you are having problems, follow these steps:
+
+1. Create a new folder `C:\R`  
+2. Create a new `Environment Variable` (see below) called `R_LIBS_USER` and give it the value `C:\R`.
+The steps below can guide you through this.
+
+## Windows 10 and Windows 8
+
+1. In Search, search for and then select: `System (Control Panel)`
+2. Click the `Advanced` system settings link.
+3. Click `Environment Variables`. 
+4. In the User Variables Section, click `New...`
+5. Name the New Variable `R_LIBS_USER` and specify the value `C:\R`
+
+## Windows 7
+
+1. From the desktop, right click the Computer icon.
+2. Choose Properties from the context menu.
+3. Click the `Advanced` system settings link.
+4. Click `Environment Variables`. 
+5. In the User Variables Section, click `New...`
+6. Name the New Variable `R_LIBS_USER` and specify the value `C:\R`
+
