@@ -1,6 +1,6 @@
 # Introduction To R
 Steve Pederson  
-9 July 2016  
+20 July 2016  
 
 
 
