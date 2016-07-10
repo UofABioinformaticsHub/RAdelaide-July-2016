@@ -121,16 +121,15 @@ print(x)
 
 ## The R Environment
 
-Where have we created the object `x`?
+__Where have we created the object `x`?__
 
 - Is it on your hard drive somewhere?
 - Is it in a file somewhere?
 
 ## The R Environment
 
-We have placed `x` in our `R Workspace`
-
-More formally known as your `Global Environment`
+- We have placed `x` in our `R Workspace`
+- More formally known as your `Global Environment`
 
 <img src="images/EnvironmentTab.png" width="600" style="display: block; margin: auto;" />
 
@@ -148,7 +147,7 @@ save.image()
 ## The R Environment
 
 - In the R Environment, we can create objects of multiple types.
-- We first give them a name (e.g. `x`) and then assign a value to it using the `<-`symbol.
+- We first give them a name (e.g. `x`) and then assign a value to it using the `<-` symbol.
 - __This is like an arrow putting the value into the object.__
 - Can also work the other way, but is rarely done
 
@@ -173,6 +172,8 @@ In the bottom right are a series of tabs
 2. `Plots`: Every time you make a graph it appears here
 3. `Packages`: __NEVER CLICK OR UN-CLICK ANYTHING HERE__
 4. `Help`: We'll explore this later
+
+## RStudio | Other Tabs and Features
 
 - Every tab can be resized using the buttons in the top right
 - Window separators can also be be moved
@@ -204,4 +205,4 @@ Let's set one up for this course: `File > New Project`
 
 - Choose either a `New` or `Existing` Directory
 - Navigate to where you think is suitable for keeping the course notes
-- The Project will automatically be assigned the directory name
+- The project name will automatically be assigned as the directory name

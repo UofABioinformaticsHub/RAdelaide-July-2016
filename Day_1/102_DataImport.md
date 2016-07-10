@@ -5,12 +5,11 @@ Steve Pederson
 
 
 
-
 # Getting Data Into R
 
 ## Importing Data
 
-- A stumbling block for many learning `R` is the `Error Messages`
+- A stumbling block for many learning `R` is the __Error Messages__
 - We often see them while we're loading data
 - `R` is very strict about data formats
 - We can load `.xlsx`, `xls`, `csv`, `txt`, `gtf/gff` files + many more
@@ -24,7 +23,7 @@ Steve Pederson
 __Which sheet do you think will be the most problematic to load?__
 
 <div class="footer" style="font-size:55%;width:50%;line-spacing:1;text-align:right">
-  <p>Worksheet downloaded from Gaurav Nagar,Indian Veterinary Research Institute</p>
+  <p>Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute</p>
 </div>
 
 ## Importing Data
@@ -36,6 +35,10 @@ __Which sheet do you think will be the most problematic to load?__
 - No blank rows at the top or separating sub-tables
 - No blank columns
 
+## Importing Data
+
+### Sheet 2
+__What about all those missing values?__
 
 ## Importing Data
 
@@ -51,7 +54,8 @@ __What about all those missing values?__
 ### Sheet 3
 
 - Here we effectively have 2 tables on the same sheet
-    - This can cause error messages
+    - This may cause error messages?
+    - `R` guesses the number of columns from the first row
     - The plot will simply be ignored
 
 __Always think in terms of columns__
@@ -92,6 +96,7 @@ toothData <- read.csv("RAdelaideWorkshop/Day_1/data/toothData.csv")
 __ALWAYS__ copy the first line into your script!
 
 - This is the exact command we've used to load the file
+- Anything we've set by clicking will also be in this line
 
 ## Using the GUI To Load Data
 
@@ -102,7 +107,7 @@ View(toothData)
 
 The second line has opened a preview of our `R` object
 
-- Unless we change it, the `R` object will be the filename before the `.csv`
+- Unless we change it manually, the `R` object will be the filename before the `.csv`
 - Also look at the `toothData` object in the `Environment` tab (click the arrow)
 
 ## Data Frame Objects
@@ -133,7 +138,6 @@ head(toothData)
 ## Data Frame Objects | Factors
 
 - By default `R` assumes that a column of text is a categorical variable (i.e. a `factor`)
-- Can be a trap for the unwary
 - We can change this by unchecking the `stringsAsFactors` button during import
 
 ## What have we really done?
@@ -155,11 +159,11 @@ head(toothData)
 
 - The above uses the default function `read.csv()`
 - The package `readr` has a similar, but slightly superior version called `read_csv()`
+- No GUI for this method
 
 
 ```r
 library(dplyr)
-library(tibble)
 library(readr)
 toothData <- read_csv("data/toothData.csv")
 ```
@@ -168,13 +172,110 @@ toothData <- read_csv("data/toothData.csv")
 
 __Why is this better?__
 
-1. This is a `local data frame`
+1. It's faster
 2. Character columns are left as plain text
-3. Display in the `Console` is more convenient
+3. It also runs some checks on your data $\implies$ can give more error messages
+4. Output is a `local data frame` $\implies$ display in the `Console` is more convenient
 
 
 ```r
 toothData
 ```
 
+## Reading Help Pages
 
+
+```r
+?read_csv
+```
+
+- Once again we have four functions but stick to `read_csv()`
+- This function has numerous arguments given as names <br>(e.g. `file`, `col_names`)
+    - If just the name is given, we need to specify something
+    - Otherwise the argument is given with a default value <br>(e.g. `col_names = TRUE`) 
+    - If specifying in order, we don't need to name arguments
+
+## Reading Help Pages
+
+
+```r
+toothData <- read_csv("data/toothData.csv")
+```
+
+Is equivalent to:
+
+
+```r
+toothData <- read_csv(file ="data/toothData.csv")
+```
+
+## Reading Help Pages
+
+__If we had a file with 3 blank lines to start, what would our code look like?__
+
+
+```r
+toothData <- read_csv("data/toothData.csv", ???)
+```
+
+## Reading Help Pages
+
+__If we had a file with 3 blank lines to start, what would our code look like?__
+
+
+```r
+toothData <- read_csv("data/toothData.csv", skip = 3)
+```
+
+__What if the first three lines were comments starting with `#`?__
+
+## Reading Help Pages
+
+__If we had a file with 3 blank lines to start, what would our code look like?__
+
+
+```r
+toothData <- read_csv("data/toothData.csv", skip = 3)
+```
+
+__What if the first three lines were comments starting with `#`?__
+
+- It would be the same. 
+- `R` uses the first row to determine the number of columns
+
+## Reading Help Pages
+
+For those who need to know:
+
+- The bottom three functions are simplified wrappers to `read_delim()`
+- `read_csv()` calls `read_delim()` using `delim = ","`
+- `read_csv2()` calls `read_delim()` using `delim = ";"`
+- `read_tsv()` calls `read_delim()` using `delim = "\t"`
+
+__What function would we call for *space-delimited* files?__
+
+## Loading Excel Files
+
+`R` also has a package for loading `.xls` and `xlsx` files.
+
+
+```r
+library(readxl)
+```
+
+The main function is `read_excel()`
+
+
+```r
+?read_excel
+```
+
+## Loading Excel Files
+
+__Try loading each of the sheets from `RealTimeData.xslx`__
+
+(Remember to call the `R` objects something)
+
+__Do you get an error message for sheet 3?__
+
+__How could we load these two separate tables?__

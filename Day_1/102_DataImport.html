@@ -117,7 +117,7 @@
 </article></slide><slide class=''><hgroup><h2>Importing Data</h2></hgroup><article  id="importing-data">
 
 <ul>
-<li>A stumbling block for many learning <code>R</code> is the <code>Error Messages</code></li>
+<li>A stumbling block for many learning <code>R</code> is the <strong>Error Messages</strong></li>
 <li>We often see them while we&#39;re loading data</li>
 <li><code>R</code> is very strict about data formats</li>
 <li>We can load <code>.xlsx</code>, <code>xls</code>, <code>csv</code>, <code>txt</code>, <code>gtf/gff</code> files + many more</li>
@@ -136,7 +136,7 @@
 <div class="footer" style="font-size:55%;width:50%;line-spacing:1;text-align:right">
 <p>
 
-Worksheet downloaded from Gaurav Nagar,Indian Veterinary Research Institute
+Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute
 
 </p></div>
 
@@ -157,13 +157,19 @@ Worksheet downloaded from Gaurav Nagar,Indian Veterinary Research Institute
 
 <p><strong>What about all those missing values?</strong></p>
 
+</article></slide><slide class=''><hgroup><h2>Importing Data</h2></hgroup><article  id="importing-data-4">
+
+<h3>Sheet 2</h3>
+
+<p><strong>What about all those missing values?</strong></p>
+
 <ul>
 <li><code>R</code> can happily deal with missing values: \(\implies\) will load as <code>NA</code></li>
 <li>The missing column names may give a warning message</li>
 <li>Otherwise no problems</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Importing Data</h2></hgroup><article  id="importing-data-4">
+</article></slide><slide class=''><hgroup><h2>Importing Data</h2></hgroup><article  id="importing-data-5">
 
 <h3>Sheet 3</h3>
 
@@ -171,7 +177,8 @@ Worksheet downloaded from Gaurav Nagar,Indian Veterinary Research Institute
 <li>Here we effectively have 2 tables on the same sheet
 
 <ul>
-<li>This can cause error messages</li>
+<li>This may cause error messages?</li>
+<li><code>R</code> guesses the number of columns from the first row</li>
 <li>The plot will simply be ignored</li>
 </ul></li>
 </ul>
@@ -212,6 +219,7 @@ View(toothData)</pre>
 
 <ul>
 <li>This is the exact command we&#39;ve used to load the file</li>
+<li>Anything we&#39;ve set by clicking will also be in this line</li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>Using the GUI To Load Data</h2></hgroup><article  id="using-the-gui-to-load-data-3">
@@ -221,7 +229,7 @@ View(toothData)</pre>
 <p>The second line has opened a preview of our <code>R</code> object</p>
 
 <ul>
-<li>Unless we change it, the <code>R</code> object will be the filename before the <code>.csv</code></li>
+<li>Unless we change it manually, the <code>R</code> object will be the filename before the <code>.csv</code></li>
 <li>Also look at the <code>toothData</code> object in the <code>Environment</code> tab (click the arrow)</li>
 </ul>
 
@@ -246,7 +254,6 @@ View(toothData)</pre>
 
 <ul>
 <li>By default <code>R</code> assumes that a column of text is a categorical variable (i.e. a <code>factor</code>)</li>
-<li>Can be a trap for the unwary</li>
 <li>We can change this by unchecking the <code>stringsAsFactors</code> button during import</li>
 </ul>
 
@@ -270,10 +277,10 @@ View(toothData)</pre>
 <ul>
 <li>The above uses the default function <code>read.csv()</code></li>
 <li>The package <code>readr</code> has a similar, but slightly superior version called <code>read_csv()</code></li>
+<li>No GUI for this method</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>library(dplyr)
-library(tibble)
 library(readr)
 toothData &lt;- read_csv(&quot;data/toothData.csv&quot;)</pre>
 
@@ -282,12 +289,96 @@ toothData &lt;- read_csv(&quot;data/toothData.csv&quot;)</pre>
 <p><strong>Why is this better?</strong></p>
 
 <ol>
-<li>This is a <code>local data frame</code></li>
+<li>It&#39;s faster</li>
 <li>Character columns are left as plain text</li>
-<li>Display in the <code>Console</code> is more convenient</li>
+<li>It also runs some checks on your data \(\implies\) can give more error messages</li>
+<li>Output is a <code>local data frame</code> \(\implies\) display in the <code>Console</code> is more convenient</li>
 </ol>
 
-<pre class = 'prettyprint lang-r'>toothData</pre></article></slide>
+<pre class = 'prettyprint lang-r'>toothData</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reading Help Pages</h2></hgroup><article  id="reading-help-pages">
+
+<pre class = 'prettyprint lang-r'>?read_csv</pre>
+
+<ul>
+<li>Once again we have four functions but stick to <code>read_csv()</code></li>
+<li>This function has numerous arguments given as names <br>(e.g. <code>file</code>, <code>col_names</code>)
+
+<ul>
+<li>If just the name is given, we need to specify something</li>
+<li>Otherwise the argument is given with a default value <br>(e.g. <code>col_names = TRUE</code>)</li>
+<li>If specifying in order, we don&#39;t need to name arguments</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Reading Help Pages</h2></hgroup><article  id="reading-help-pages-1">
+
+<pre class = 'prettyprint lang-r'>toothData &lt;- read_csv(&quot;data/toothData.csv&quot;)</pre>
+
+<p>Is equivalent to:</p>
+
+<pre class = 'prettyprint lang-r'>toothData &lt;- read_csv(file =&quot;data/toothData.csv&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reading Help Pages</h2></hgroup><article  id="reading-help-pages-2">
+
+<p><strong>If we had a file with 3 blank lines to start, what would our code look like?</strong></p>
+
+<pre class = 'prettyprint lang-r'>toothData &lt;- read_csv(&quot;data/toothData.csv&quot;, ???)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reading Help Pages</h2></hgroup><article  id="reading-help-pages-3">
+
+<p><strong>If we had a file with 3 blank lines to start, what would our code look like?</strong></p>
+
+<pre class = 'prettyprint lang-r'>toothData &lt;- read_csv(&quot;data/toothData.csv&quot;, skip = 3)</pre>
+
+<p><strong>What if the first three lines were comments starting with <code>#</code>?</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Reading Help Pages</h2></hgroup><article  id="reading-help-pages-4">
+
+<p><strong>If we had a file with 3 blank lines to start, what would our code look like?</strong></p>
+
+<pre class = 'prettyprint lang-r'>toothData &lt;- read_csv(&quot;data/toothData.csv&quot;, skip = 3)</pre>
+
+<p><strong>What if the first three lines were comments starting with <code>#</code>?</strong></p>
+
+<ul>
+<li>It would be the same.</li>
+<li><code>R</code> uses the first row to determine the number of columns</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Reading Help Pages</h2></hgroup><article  id="reading-help-pages-5">
+
+<p>For those who need to know:</p>
+
+<ul>
+<li>The bottom three functions are simplified wrappers to <code>read_delim()</code></li>
+<li><code>read_csv()</code> calls <code>read_delim()</code> using <code>delim = &quot;,&quot;</code></li>
+<li><code>read_csv2()</code> calls <code>read_delim()</code> using <code>delim = &quot;;&quot;</code></li>
+<li><code>read_tsv()</code> calls <code>read_delim()</code> using <code>delim = &quot;\t&quot;</code></li>
+</ul>
+
+<p><strong>What function would we call for <em>space-delimited</em> files?</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Loading Excel Files</h2></hgroup><article  id="loading-excel-files">
+
+<p><code>R</code> also has a package for loading <code>.xls</code> and <code>xlsx</code> files.</p>
+
+<pre class = 'prettyprint lang-r'>library(readxl)</pre>
+
+<p>The main function is <code>read_excel()</code></p>
+
+<pre class = 'prettyprint lang-r'>?read_excel</pre>
+
+</article></slide><slide class=''><hgroup><h2>Loading Excel Files</h2></hgroup><article  id="loading-excel-files-1">
+
+<p><strong>Try loading each of the sheets from <code>RealTimeData.xslx</code></strong></p>
+
+<p>(Remember to call the <code>R</code> objects something)</p>
+
+<p><strong>Do you get an error message for sheet 3?</strong></p>
+
+<p><strong>How could we load these two separate tables?</strong></p></article></slide>
 
 
   <slide class="backdrop"></slide>
