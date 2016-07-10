@@ -92,7 +92,7 @@
     }
   </style>
 
-  <link href="data:text/css;charset=utf-8,%2Egdbar%20img%20%7B%0Awidth%3A%20200px%20%21important%3B%0Aheight%3A%20150px%20%21important%3B%0Amargin%3A%208px%208px%3B%0A%7D%0A%2Egdbar%20%7B%0Awidth%3A%20300px%20%21important%3B%0Aheight%3A%20180px%20%21important%3B%0A%7D%0Aslides%20%3E%20slide%3Anot%28%2Enobackground%29%3Abefore%20%7B%0Awidth%3A%20100px%3B%0Aheight%3A%2075px%3B%0Abackground%2Dsize%3A%20100px%2075px%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
+  <link href="data:text/css;charset=utf-8,%2Egdbar%20img%20%7B%0Awidth%3A%20200px%20%21important%3B%0Aheight%3A%20150px%20%21important%3B%0Amargin%3A%208px%208px%3B%0A%7D%0A%2Egdbar%20%7B%0Awidth%3A%20300px%20%21important%3B%0Aheight%3A%20180px%20%21important%3B%0A%7D%0A%2Efooter%20%7B%0Acolor%3A%20black%3B%0Aposition%3A%20fixed%3B%0Atop%3A%2090%25%3B%0Atext%2Dalign%3Acenter%3B%0Awidth%3A50%25%3B%0A%7D%0Aslides%20%3E%20slide%3Anot%28%2Enobackground%29%3Abefore%20%7B%0Awidth%3A%20100px%3B%0Aheight%3A%2075px%3B%0Abackground%2Dsize%3A%20100px%2075px%3B%0A%7D%0Aslides%20%3E%20slide%20%7B%0Aline%2Dheight%3A%201%2E8%3B%0A%7D" rel="stylesheet" type="text/css" />
 
 
 </head>
@@ -134,16 +134,8 @@
 <p>Excel is notorious for converting values from one thing to another inappropriately.</p>
 
 <ul>
-<li>Gene names are often converted to dates
-
-<ul>
-<li>Septin genes (e.g. <em>SEPT9</em>)</li>
-</ul></li>
-<li>Genotypes can be converted into numeric values
-
-<ul>
-<li>A homozygote for the first allele (1/1)</li>
-</ul></li>
+<li><p>Gene names are often converted to dates (e.g. <em>SEPT9</em>)</p></li>
+<li><p>Genotypes can be converted into numeric values (e.g. the homozygote &quot;1/1&quot;)</p></li>
 </ul>
 
 <p>In <code>R</code> we generally work with plain text files.</p>
@@ -165,19 +157,24 @@
 
 <p>With this extra capability, we need to understand a little about:</p>
 
-<ul>
+<ol>
 <li>Data Types<br/></li>
 <li>Data Structures</li>
-</ul>
+</ol>
+
+<p>That&#39;s tomorrow&#39;s content</p>
+
+</article></slide><slide class=''><hgroup><h2>Using R</h2></hgroup><article  id="using-r-1">
 
 <p>Today we will start with:</p>
 
-<ul>
+<ol>
 <li>An Introduction to RStudio</li>
 <li>Reading data into R</li>
 <li>Manipulating and cleaning data</li>
 <li>Visualising data</li>
-</ul>
+<li>Writing Reports</li>
+</ol>
 
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Introduction to RStudio</h2></hgroup><article  id="introduction-to-rstudio">
 
@@ -218,30 +215,24 @@
 <li>We can execute commands directly in the <code>Console</code> or send from the <code>Script Window</code></li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Executing Commands from the Script Window</h2></hgroup><article  id="executing-commands-from-the-script-window">
+</article></slide><slide class=''><hgroup><h2>Executing Code from the Script Window</h2></hgroup><article  id="executing-code-from-the-script-window">
+
+<p>Enter the following in the <code>Script Window</code></p>
+
+<pre class = 'prettyprint lang-r'># Create our first R object
+x &lt;- 5</pre>
 
 <ul>
-<li>Commands are sent to the <code>Console</code> by selecting a line/section, then either
+<li>Lines of code are sent to the <code>Console</code> by either:
 
 <ul>
 <li><code>Ctrl + Enter</code></li>
 <li>Copy &amp; Paste into the Console</li>
-<li>Clicking the <code>Run</code> button at the top right of the <code>Script Window</code></li>
+<li>Clicking the <code>Run</code> button at the top right</li>
 </ul></li>
 </ul>
 
-<p><strong>Let&#39;s create an R object called <code>x</code></strong></p>
-
-</article></slide><slide class=''><hgroup><h2>Executing Commands from the Script Window</h2></hgroup><article  id="executing-commands-from-the-script-window-1">
-
-<p>Enter the following in the <code>Script Window</code>, then send it to the <code>Console</code></p>
-
-<pre class = 'prettyprint lang-r'># Let&#39;s create our first R object
-x &lt;- 5</pre>
-
-<p><strong>NB: <code>R</code> is case-sensitive so please be careful</strong></p>
-
-</article></slide><slide class=''><hgroup><h2>Executing Commands from the Script Window</h2></hgroup><article  id="executing-commands-from-the-script-window-2">
+</article></slide><slide class=''><hgroup><h2>Executing Commands from the Script Window</h2></hgroup><article  id="executing-commands-from-the-script-window">
 
 <p>We can view the contents of the object <code>x</code> by:</p>
 
@@ -250,11 +241,8 @@ x &lt;- 5</pre>
 <li>entering it&#39;s name in the <code>Script Window</code> &amp; sending it to the <code>Console</code></li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>x</pre>
-
-<p>[1] 5</p>
-
-<p>We may sometimes see this written as <code>print(x)</code></p>
+<pre class = 'prettyprint lang-r'>x
+print(x)</pre>
 
 </article></slide><slide class=''><hgroup><h2>The R Environment</h2></hgroup><article  id="the-r-environment">
 
@@ -277,7 +265,7 @@ x &lt;- 5</pre>
 
 <ul>
 <li>The <code>Environment</code> is like your desktop</li>
-<li>We keep all our relevant objects here and can save the entire workspace as an <code>.RData</code> object</li>
+<li>We keep all our relevant objects here and can save all the objects in your workspace as an <code>.RData</code> object</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>save.image()</pre>

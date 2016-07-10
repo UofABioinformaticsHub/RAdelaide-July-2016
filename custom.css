@@ -9,8 +9,20 @@
   height: 180px !important;
 }
 
+.footer {
+    color: black;
+    position: fixed;
+    top: 90%;
+    text-align:center;
+    width:50%;
+}
+
 slides > slide:not(.nobackground):before {
   width: 100px;
   height: 75px;
   background-size: 100px 75px;
+}
+
+slides > slide {
+  line-height: 1.8;
 }

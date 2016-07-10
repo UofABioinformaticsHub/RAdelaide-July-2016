@@ -24,11 +24,9 @@ Steve Pederson
 
 Excel is notorious for converting values from one thing to another inappropriately.
 
-- Gene names are often converted to dates 
-    - Septin genes (e.g. _SEPT9_)
+- Gene names are often converted to dates (e.g. _SEPT9_)
 
-- Genotypes can be converted into numeric values
-    - A homozygote for the first allele (1/1)
+- Genotypes can be converted into numeric values (e.g. the homozygote "1/1")
     
 In `R` we generally work with plain text files.
     
@@ -45,15 +43,20 @@ In `R` we generally work with plain text files.
   
 With this extra capability, we need to understand a little about:  
 
-- Data Types  
-- Data Structures  
+1. Data Types  
+2. Data Structures  
+
+That's tomorrow's content
+
+## Using R
 
 Today we will start with:
 
-- An Introduction to RStudio
-- Reading data into R
-- Manipulating and cleaning data
-- Visualising data
+1. An Introduction to RStudio
+2. Reading data into R
+3. Manipulating and cleaning data
+4. Visualising data
+5. Writing Reports
 
 # Introduction to RStudio
 
@@ -86,26 +89,20 @@ Today we will start with:
 - Is essentially the _"engine"_
 - We can execute commands directly in the `Console` or send from the `Script Window`
 
-## Executing Commands from the Script Window
+## Executing Code from the Script Window
 
-- Commands are sent to the `Console` by selecting a line/section, then either
-    - `Ctrl + Enter`
-    - Copy & Paste into the Console
-    - Clicking the `Run` button at the top right of the `Script Window`
-    
-__Let's create an R object called `x`__
-
-## Executing Commands from the Script Window
-
-Enter the following in the `Script Window`, then send it to the `Console`
+Enter the following in the `Script Window`
 
 
 ```r
-# Let's create our first R object
+# Create our first R object
 x <- 5
 ```
 
-__NB: `R` is case-sensitive so please be careful__
+- Lines of code are sent to the `Console` by either:
+    - `Ctrl + Enter`
+    - Copy & Paste into the Console
+    - Clicking the `Run` button at the top right
 
 
 ## Executing Commands from the Script Window
@@ -118,11 +115,9 @@ We can view the contents of the object `x` by:
 
 ```r
 x
+print(x)
 ```
 
-[1] 5
-
-We may sometimes see this written as `print(x)`
 
 ## The R Environment
 
@@ -142,7 +137,7 @@ More formally known as your `Global Environment`
 ## The R Environment
 
 - The `Environment` is like your desktop
-- We keep all our relevant objects here and can save the entire workspace as an `.RData` object
+- We keep all our relevant objects here and can save all the objects in your workspace as an `.RData` object
 
 
 ```r

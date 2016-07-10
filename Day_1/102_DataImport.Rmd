@@ -34,11 +34,13 @@ library(knitr)
 ## Importing Data
 
 - Things we do to make it "look nice" in Excel can create problems
-- In `Day1/data`, open `Real time sheep.xlsx` in Excel (or Libre Office)
+- In `Day1/data`, open `RealTimeData.xlsx` in Excel (or Libre Office)
 
-__Which sheet do you thin will be the most problematic to load?__
+__Which sheet do you think will be the most problematic to load?__
 
-Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute
+<div class="footer" style="font-size:55%;width:50%;line-spacing:1;text-align:right">
+  <p>Worksheet downloaded from Gaurav Nagar,Indian Veterinary Research Institute</p>
+</div>
 
 ## Importing Data
 
@@ -49,8 +51,6 @@ Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute
 - No blank rows at the top or separating sub-tables
 - No blank columns
 
-### Sheet 2
-__What about all those missing values?__
 
 ## Importing Data
 
@@ -67,7 +67,7 @@ __What about all those missing values?__
 
 - Here we effectively have 2 tables on the same sheet
     - This can cause error messages
-- The plot will simply be ignored
+    - The plot will simply be ignored
 
 __Always think in terms of columns__
 
@@ -79,11 +79,10 @@ __Always think in terms of columns__
 
 ![](images/guiImport.png)
 
-<br> A preview will then appear
+## Using the GUI To Load Data | The Preview Window
 
-## Using the GUI To Load Data
 
-```{r, include=TRUE, out.width=600}
+```{r, include=TRUE, out.width=550}
 include_graphics("images/Preview.png")
 ```
 
@@ -92,7 +91,7 @@ include_graphics("images/Preview.png")
 1. Try changing a few settings to see the changes in the Preview section
 2. Once you're happy, click "Import"
 
-Two things have just happened, and you can see two lines of code in the Console
+You will see two lines of code in the `Console` $\implies$ two things have just happened
 
 ```{r, eval=FALSE, echo=TRUE, include=TRUE}
 toothData <- read.csv("RAdelaideWorkshop/Day_1/data/toothData.csv")
@@ -101,19 +100,48 @@ View(toothData)
 
 ## Using the GUI To Load Data
 
-- If doing this, __ALWAYS__ copy the first line into your script!  
-(This is what we've just done as a line of `R` code)
-
 ```{r, eval=FALSE, echo=TRUE, include=TRUE}
 toothData <- read.csv("RAdelaideWorkshop/Day_1/data/toothData.csv")
+```
+
+__ALWAYS__ copy the first line into your script!
+
+- This is the exact command we've used to load the file
+
+## Using the GUI To Load Data
+
+```{r, eval=FALSE, echo=TRUE, include=TRUE}
 View(toothData)
 ```
 
-- The second line has opened a preview of our `R` object
+The second line has opened a preview of our `R` object
+
 - Unless we change it, the `R` object will be the filename before the `.csv`
 - Also look at the `toothData` object in the `Environment` tab (click the arrow)
 
-## Factors
+## Data Frame Objects
+
+- The object `toothData` is known as a `data.frame`
+- `R` equivalent to a spreadsheet
+
+```{r,eval=FALSE, echo=TRUE, include=TRUE}
+View(toothData)
+```
+
+OR
+
+```{r,eval=FALSE, echo=TRUE, include=TRUE}
+toothData
+```
+
+OR
+
+```{r,eval=FALSE, echo=TRUE, include=TRUE}
+head(toothData)
+```
+
+
+## Data Frame Objects | Factors
 
 - By default `R` assumes that a column of text is a categorical variable (i.e. a `factor`)
 - Can be a trap for the unwary
@@ -134,5 +162,27 @@ View(toothData)
 - The main differences are in the separators
 
 ## A Better Alternative
+
+- The above uses the default function `read.csv()`
+- The package `readr` has a similar, but slightly superior version called `read_csv()`
+
+```{r, echo=TRUE, include=TRUE}
+library(dplyr)
+library(tibble)
+library(readr)
+toothData <- read_csv("data/toothData.csv")
+```
+
+## A Better Alternative
+
+__Why is this better?__
+
+1. This is a `local data frame`
+2. Character columns are left as plain text
+3. Display in the `Console` is more convenient
+
+```{r, eval=FALSE, echo=TRUE, include=TRUE}
+toothData
+```
 
 
