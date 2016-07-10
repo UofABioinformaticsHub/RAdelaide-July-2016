@@ -206,3 +206,7 @@ Let's set one up for this course: `File > New Project`
 - Choose either a `New` or `Existing` Directory
 - Navigate to where you think is suitable for keeping the course notes
 - The project name will automatically be assigned as the directory name
+
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2016/)
+</div>

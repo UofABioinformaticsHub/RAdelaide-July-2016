@@ -146,7 +146,7 @@ Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute
 
 <ul>
 <li>This is actually the type of format <code>R</code> loves to see</li>
-<li>We have a simple column structure, with column and row names</li>
+<li>Simple column structure, with column and row names</li>
 <li>No blank rows at the top or separating sub-tables</li>
 <li>No blank columns</li>
 </ul>
@@ -165,7 +165,7 @@ Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute
 
 <ul>
 <li><code>R</code> can happily deal with missing values: \(\implies\) will load as <code>NA</code></li>
-<li>The missing column names may give a warning message</li>
+<li>The missing column names may give strange behaviours</li>
 <li>Otherwise no problems</li>
 </ul>
 
@@ -177,7 +177,7 @@ Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute
 <li>Here we effectively have 2 tables on the same sheet
 
 <ul>
-<li>This may cause error messages?</li>
+<li>Will this cause error messages?</li>
 <li><code>R</code> guesses the number of columns from the first row</li>
 <li>The plot will simply be ignored</li>
 </ul></li>
@@ -189,7 +189,7 @@ Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute
 
 <ul>
 <li>In today&#39;s <code>data</code> folder is the file <code>toothData.csv</code></li>
-<li>Clicking on it will only open it in the <code>Script Window</code> as a text file</li>
+<li>Clicking on it will open it in the <code>Script Window</code> as a text file</li>
 <li>We can use the button as shown</li>
 </ul>
 
@@ -202,7 +202,7 @@ Worksheet downloaded from Gaurav Nagar, Indian Veterinary Research Institute
 </article></slide><slide class=''><hgroup><h2>Using the GUI To Load Data</h2></hgroup><article  id="using-the-gui-to-load-data-1">
 
 <ol>
-<li>Try changing a few settings to see the changes in the Preview section</li>
+<li>Try changing a few settings &amp; note changes in the Preview</li>
 <li>Once you&#39;re happy, click &quot;Import&quot;</li>
 </ol>
 
@@ -229,7 +229,7 @@ View(toothData)</pre>
 <p>The second line has opened a preview of our <code>R</code> object</p>
 
 <ul>
-<li>Unless we change it manually, the <code>R</code> object will be the filename before the <code>.csv</code></li>
+<li>By default, the <code>R</code> object will be named using the file-name before the <code>.csv</code></li>
 <li>Also look at the <code>toothData</code> object in the <code>Environment</code> tab (click the arrow)</li>
 </ul>
 
@@ -238,23 +238,20 @@ View(toothData)</pre>
 <ul>
 <li>The object <code>toothData</code> is known as a <code>data.frame</code></li>
 <li><code>R</code> equivalent to a spreadsheet</li>
+<li>Three possible ways to inspect this are:</li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>View(toothData)</pre>
+<pre class = 'prettyprint lang-r'>View(toothData)
+toothData
+head(toothData)</pre>
 
-<p>OR</p>
-
-<pre class = 'prettyprint lang-r'>toothData</pre>
-
-<p>OR</p>
-
-<pre class = 'prettyprint lang-r'>head(toothData)</pre>
+<p><strong>What were the differences between each method?</strong></p>
 
 </article></slide><slide class=''><hgroup><h2>Data Frame Objects </h2><h3> Factors</h3></hgroup><article  id="data-frame-objects-factors">
 
 <ul>
 <li>By default <code>R</code> assumes that a column of text is a categorical variable (i.e. a <code>factor</code>)</li>
-<li>We can change this by unchecking the <code>stringsAsFactors</code> button during import</li>
+<li>We can change this by un-checking the <code>stringsAsFactors</code> button during import</li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>What have we really done?</h2></hgroup><article  id="what-have-we-really-done">
@@ -284,12 +281,10 @@ View(toothData)</pre>
 library(readr)
 toothData &lt;- read_csv(&quot;data/toothData.csv&quot;)</pre>
 
-</article></slide><slide class=''><hgroup><h2>A Better Alternative</h2></hgroup><article  id="a-better-alternative-1">
-
-<p><strong>Why is this better?</strong></p>
+</article></slide><slide class=''><hgroup><h2>A Better Alternative </h2><h3> Why is this better?</h3></hgroup><article  id="a-better-alternative-why-is-this-better">
 
 <ol>
-<li>It&#39;s faster</li>
+<li>Faster</li>
 <li>Character columns are left as plain text</li>
 <li>It also runs some checks on your data \(\implies\) can give more error messages</li>
 <li>Output is a <code>local data frame</code> \(\implies\) display in the <code>Console</code> is more convenient</li>
@@ -307,7 +302,7 @@ toothData &lt;- read_csv(&quot;data/toothData.csv&quot;)</pre>
 
 <ul>
 <li>If just the name is given, we need to specify something</li>
-<li>Otherwise the argument is given with a default value <br>(e.g. <code>col_names = TRUE</code>)</li>
+<li>Otherwise the argument is given a default value <br>(e.g. <code>col_names = TRUE</code>)</li>
 <li>If specifying in order, we don&#39;t need to name arguments</li>
 </ul></li>
 </ul>
@@ -318,7 +313,7 @@ toothData &lt;- read_csv(&quot;data/toothData.csv&quot;)</pre>
 
 <p>Is equivalent to:</p>
 
-<pre class = 'prettyprint lang-r'>toothData &lt;- read_csv(file =&quot;data/toothData.csv&quot;)</pre>
+<pre class = 'prettyprint lang-r'>toothData &lt;- read_csv(file = &quot;data/toothData.csv&quot;)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Reading Help Pages</h2></hgroup><article  id="reading-help-pages-2">
 
@@ -347,9 +342,7 @@ toothData &lt;- read_csv(&quot;data/toothData.csv&quot;)</pre>
 <li><code>R</code> uses the first row to determine the number of columns</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Reading Help Pages</h2></hgroup><article  id="reading-help-pages-5">
-
-<p>For those who need to know:</p>
+</article></slide><slide class=''><hgroup><h2>Reading Help Pages </h2><h3> Bonus Slide</h3></hgroup><article  id="reading-help-pages-bonus-slide">
 
 <ul>
 <li>The bottom three functions are simplified wrappers to <code>read_delim()</code></li>
@@ -376,9 +369,12 @@ toothData &lt;- read_csv(&quot;data/toothData.csv&quot;)</pre>
 
 <p>(Remember to call the <code>R</code> objects something)</p>
 
-<p><strong>Do you get an error message for sheet 3?</strong></p>
+<p><strong>Do you get any error messages for sheet 3?</strong></p>
 
-<p><strong>How could we load these two separate tables?</strong></p></article></slide>
+<p><strong>How could we load these two separate tables?</strong></p>
+
+<div class="footer" style="text-align:center;width:25%">
+<p><a href='http://uofabioinformaticshub.github.io/RAdelaide-July-2016/' title=''>Home</a></p></div></article></slide>
 
 
   <slide class="backdrop"></slide>

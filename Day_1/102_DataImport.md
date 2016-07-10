@@ -31,7 +31,7 @@ __Which sheet do you think will be the most problematic to load?__
 ### Sheet 1
 
 - This is actually the type of format `R` loves to see
-- We have a simple column structure, with column and row names
+- Simple column structure, with column and row names
 - No blank rows at the top or separating sub-tables
 - No blank columns
 
@@ -46,7 +46,7 @@ __What about all those missing values?__
 __What about all those missing values?__
 
 - `R` can happily deal with missing values: $\implies$ will load as `NA`
-- The missing column names may give a warning message
+- The missing column names may give strange behaviours
 - Otherwise no problems
 
 ## Importing Data
@@ -54,7 +54,7 @@ __What about all those missing values?__
 ### Sheet 3
 
 - Here we effectively have 2 tables on the same sheet
-    - This may cause error messages?
+    - Will this cause error messages?
     - `R` guesses the number of columns from the first row
     - The plot will simply be ignored
 
@@ -63,7 +63,7 @@ __Always think in terms of columns__
 ## Using the GUI To Load Data
 
 - In today's `data` folder is the file `toothData.csv`
-- Clicking on it will only open it in the `Script Window` as a text file
+- Clicking on it will open it in the `Script Window` as a text file
 - We can use the button as shown
 
 ![](images/guiImport.png)
@@ -75,7 +75,7 @@ __Always think in terms of columns__
 
 ## Using the GUI To Load Data
 
-1. Try changing a few settings to see the changes in the Preview section
+1. Try changing a few settings & note changes in the Preview
 2. Once you're happy, click "Import"
 
 You will see two lines of code in the `Console` $\implies$ two things have just happened
@@ -107,38 +107,28 @@ View(toothData)
 
 The second line has opened a preview of our `R` object
 
-- Unless we change it manually, the `R` object will be the filename before the `.csv`
+- By default, the `R` object will be named using the file-name before the `.csv`
 - Also look at the `toothData` object in the `Environment` tab (click the arrow)
 
 ## Data Frame Objects
 
 - The object `toothData` is known as a `data.frame`
 - `R` equivalent to a spreadsheet
+- Three possible ways to inspect this are:
 
 
 ```r
 View(toothData)
-```
-
-OR
-
-
-```r
 toothData
-```
-
-OR
-
-
-```r
 head(toothData)
 ```
 
+__What were the differences between each method?__
 
 ## Data Frame Objects | Factors
 
 - By default `R` assumes that a column of text is a categorical variable (i.e. a `factor`)
-- We can change this by unchecking the `stringsAsFactors` button during import
+- We can change this by un-checking the `stringsAsFactors` button during import
 
 ## What have we really done?
 
@@ -168,11 +158,9 @@ library(readr)
 toothData <- read_csv("data/toothData.csv")
 ```
 
-## A Better Alternative
+## A Better Alternative | Why is this better?
 
-__Why is this better?__
-
-1. It's faster
+1. Faster
 2. Character columns are left as plain text
 3. It also runs some checks on your data $\implies$ can give more error messages
 4. Output is a `local data frame` $\implies$ display in the `Console` is more convenient
@@ -192,7 +180,7 @@ toothData
 - Once again we have four functions but stick to `read_csv()`
 - This function has numerous arguments given as names <br>(e.g. `file`, `col_names`)
     - If just the name is given, we need to specify something
-    - Otherwise the argument is given with a default value <br>(e.g. `col_names = TRUE`) 
+    - Otherwise the argument is given a default value <br>(e.g. `col_names = TRUE`) 
     - If specifying in order, we don't need to name arguments
 
 ## Reading Help Pages
@@ -206,7 +194,7 @@ Is equivalent to:
 
 
 ```r
-toothData <- read_csv(file ="data/toothData.csv")
+toothData <- read_csv(file = "data/toothData.csv")
 ```
 
 ## Reading Help Pages
@@ -243,9 +231,7 @@ __What if the first three lines were comments starting with `#`?__
 - It would be the same. 
 - `R` uses the first row to determine the number of columns
 
-## Reading Help Pages
-
-For those who need to know:
+## Reading Help Pages | Bonus Slide
 
 - The bottom three functions are simplified wrappers to `read_delim()`
 - `read_csv()` calls `read_delim()` using `delim = ","`
@@ -276,6 +262,10 @@ __Try loading each of the sheets from `RealTimeData.xslx`__
 
 (Remember to call the `R` objects something)
 
-__Do you get an error message for sheet 3?__
+__Do you get any error messages for sheet 3?__
 
 __How could we load these two separate tables?__
+
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2016/)
+</div>
