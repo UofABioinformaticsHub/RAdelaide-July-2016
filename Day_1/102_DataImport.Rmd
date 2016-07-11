@@ -231,8 +231,12 @@ toothData <- read_csv("data/toothData.csv", skip = 3)
 
 __What if the first three lines were comments starting with `#`?__
 
-- It would be the same. 
+- It could be the same. 
 - `R` uses the first row to determine the number of columns
+
+```{r, eval=FALSE}
+toothData <- read_csv("data/toothData.csv", comment = "#")
+```
 
 ## Reading Help Pages | Bonus Slide
 
