@@ -1,0 +1,250 @@
+# Data Manipulation
+Steve Pederson  
+20 July 2016  
+
+
+
+# Data Manipulation
+
+## Data Manipulation
+
+Also known as _data munging_
+
+We'll cover:
+
+- `SQL-` and `Excel-`like functions in `dplyr`
+- Changing from wide to long form using `reshape2`
+- Editing text using `stringr`
+
+## Data Manipulation | Loading The Packages
+
+
+```r
+library(readr)
+library(dplyr)
+library(tibble)
+```
+
+- The package `dplyr` works specifically with `data.frame` objects
+- Works optimally with `local data frame` aka `tbl_df` objects
+- Have just been renamed `tibble` objects
+
+## But First | Logical Tests 
+
+- Is Equal To: `==`
+- Not equal - `!=`
+- OR - `|`
+- Less than `<`
+- Less than or equal `<=`
+
+## Logical Tests
+
+
+```r
+x <- 1:10
+x == 5
+x !=5
+x > 5
+x > 5 | x == 2
+```
+
+- `R` also recognises the symbol `&` for `AND`
+- Not relevant for `dplyr`
+
+## Starting with `dplyr`
+
+Data for this session:
+
+
+```r
+data <- read_csv("data/comments.csv", comment = "#")
+data
+```
+
+So we have a 32 x 6 `data frame`
+
+
+```r
+dim(data)
+nrow(data)
+ncol(data)
+```
+
+## Starting with `dplyr` | The `select()` function
+
+The first row is the rownames from the original file.
+
+__How can we remove this column?__
+
+The function `select()` allows you to select columns by name
+
+
+```r
+select(data, gender, name, weight, height, transport)
+```
+
+## Starting with `dplyr` | The `select()` function
+
+The first row is the rownames from the original file.
+
+__How can we remove this column?__
+
+The function `select()` allows you to select columns by name
+
+
+```r
+select(data, gender, name, weight, height, transport)
+```
+
+Or by position
+
+
+```r
+select(data, 2:6)
+```
+
+## Starting with `dplyr` | The `select()` function
+
+- We can also remove columns using the minus (`-`) sign
+
+
+```r
+select(data, -1)
+```
+
+- As this column has no name, we can't call/remove it by name.
+- We can remove other columns by name
+
+
+```r
+select(data, -transport)
+```
+
+__Discuss: Would removing by name or position by the best?__
+
+## The `select()` function
+
+The `select()` function has a few bonus functions:
+
+- `starts_with()`, `ends_with()`, `contains()`, `one_of()` and `everything()`
+
+
+```r
+select(data, ends_with("t"))
+select(data, contains("eig"))
+```
+
+## The `select()` function
+
+__So far, we haven't changed the original object__
+
+We can overwrite this anytime (sometimes by accident)
+
+
+```r
+data <- select(data, -1)
+data
+```
+
+Now we have removed the meaningless columns
+
+- To get the column, we just need to reload the `.csv` file
+
+## Using `filter()` and `arrange()` 
+
+We can use our logical tests to filter the data
+
+
+```r
+filter(data, transport == "car")
+filter(data, transport == "car", gender == "female")
+```
+
+We can sort on one or more columns
+
+
+```r
+arrange(data, weight)
+arrange(data, desc(weight))
+arrange(data, transport, height)
+```
+
+## Combining Functions
+
+- This is where `dplyr` steps up a gear
+- We can chain functions together using `%>%`
+- This behaves like a `|` in the bash shell
+- Known as the `magrittr`
+
+-----
+
+<img src="images/MagrittePipe.jpg" width="800" style="display: block; margin: auto;" />
+
+## Combining Functions
+
+
+```r
+data %>% filter(transport == "bike")
+```
+
+
+```r
+data %>% filter(transport == "bike") %>% arrange(weight)
+```
+
+There is __no limit__ to the number of functions you can chain togther
+
+## Combining Functions | For the technically minded
+
+Each function in `dplyr` takes a `data.frame` as the first argument
+
+The `magrittr` pipes our (modified) `data.frame` into the next function as the first argument
+
+## Adding extra columns
+
+We can add extra columns using `mutate()`
+
+
+```r
+data %>% mutate(height_m = height/100)
+```
+
+Once we've added a column, we can refer to it by name
+
+
+```r
+data %>% mutate(height_m = height/100, BMI = weight / height_m^2)
+```
+
+We can also overwrite existing columns
+
+
+```r
+data %>% mutate(height = height/100)
+```
+
+__Have we changed the original `data.frame`?__
+
+## Changing Column Names
+
+Can use the function `rename()`
+
+
+```r
+data %>% rename(height_cm = height)
+```
+
+Now we can get crazy
+
+
+```r
+data %>%
+  rename(height_cm = height) %>%
+  mutate(height_m = height_cm/100,
+         BMI = weight / height_m^2) %>%
+  filter(BMI > 25)
+```
+
+## Getting Group Summaries
+
+Again, this is where `dplyr` really makes it easy

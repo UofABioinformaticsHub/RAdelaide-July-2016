@@ -1,22 +1,8 @@
----
-title: "Cleaning & Tidying Data"
-subtitle: "RAdelaide 2016"
-author: "Steve Pederson"
-date: "20 July 2016"
-output: 
-  ioslides_presentation:
-    css: ../custom.css
-    fig_caption: yes
-    keep_md: yes
-    logo: ../images/UoA_logo_col_vert.png
----
+# Editing Data
+Steve Pederson  
+20 July 2016  
 
-```{r, loadPackages, echo = FALSE, include = FALSE}
-library(knitr)
-opts_chunk$set(echo = TRUE, include = TRUE, 
-               warning = FALSE, message = FALSE, 
-               out.width = 800, fig.align = "center")
-```
+
 
 # Data Cleaning
 
@@ -24,7 +10,8 @@ opts_chunk$set(echo = TRUE, include = TRUE,
 
 If you've started a new session since last time:
 
-```{r}
+
+```r
 library(dplyr)
 library(readr)
 ```
@@ -46,7 +33,8 @@ library(readr)
 
 __What happens if we get this wrong?__
 
-```{r}
+
+```r
 no_header <- read_csv("data/no_header.csv")
 ```
 
@@ -54,7 +42,8 @@ no_header <- read_csv("data/no_header.csv")
 
 We can easily fix this
 
-```{r}
+
+```r
 no_header <- read_csv("data/no_header.csv", col_names = FALSE)
 ```
 
@@ -64,11 +53,13 @@ __What about that first column?__
 
 We can specify what is loaded or skipped using `col_types`
 
-```{r, eval=FALSE}
+
+```r
 ?read_csv
 ```
 
-```{r}
+
+```r
 no_header <- read_csv("data/no_header.csv", col_names = FALSE,
                       col_types = "-ccnnc")
 ```
@@ -79,7 +70,8 @@ __What if we get that wrong?__
 
 Let's mis-specify the third column as a number
 
-```{r}
+
+```r
 no_header <- read_csv("data/no_header.csv", col_names = FALSE,
                       col_types = "-cnnnc")
 ```
@@ -92,13 +84,15 @@ no_header <- read_csv("data/no_header.csv", col_names = FALSE,
 
 Let's get it wrong first
 
-```{r}
+
+```r
 comments <- read_csv("data/comments.csv")
 ```
 
 Now we can get it right
 
-```{r}
+
+```r
 comments <- read_csv("data/comments.csv", comment = "#")
 ```
 
@@ -108,7 +102,8 @@ This will work if there are comments in __any__ rows
 
 **What happens when you try to load the file `bad_colnames_.csv`**
 
-```{r}
+
+```r
 bad_colnames <- read_csv("data/bad_colnames.csv")
 ```
 
@@ -121,7 +116,8 @@ b. Without editing the file
 
 __Here's my fix__
 
-```{r}
+
+```r
 bad_colnames <- read_csv("data/bad_colnames.csv", 
                              skip =  1, col_names = FALSE)
 colnames(bad_colnames) <- c("rowname", "gender", "name",
@@ -138,8 +134,16 @@ The most common function in `R` is `c()`
 - Combines all values into a single `R` object, or `vector`
 - If left empty, it is equivalent to `NULL`
 
-```{r, results='markup'}
+
+```r
 c()
+```
+
+```
+## NULL
+```
+
+```r
 colnames(bad_colnames) <- c()
 ```
 
@@ -149,7 +153,8 @@ __What if missing values have been set to "-"?__
 
 Let's get it wrong first
 
-```{r}
+
+```r
 missing_data <- read_csv("data/missing_data.csv")
 ```
 
@@ -157,6 +162,7 @@ __Where have the errors appeared?__
 
 Now we can get it right
 
-```{r}
+
+```r
 missing_data <- read_csv("data/missing_data.csv", na = "-")
 ```

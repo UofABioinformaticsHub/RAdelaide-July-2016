@@ -24,7 +24,7 @@ R Studio will usually automatically detect your most recent version of R and wil
 To install all required packages, please execute the following commands in R (You can copy & paste both lines if you'd like):
 ```{r, eval=FALSE}
 source("https://bioconductor.org/biocLite.R")
-biocLite(c("dlpyr", "reshape2", "readr", "readxl", "ggplot2", "knitr", "parallel", "snow", "biomaRt", "GenomicRanges", "nlme", "lme4", "lattice", "MASS", "rmarkdown", "lmerTest", "car", "tibble"))
+biocLite(c("dlpyr", "reshape2", "readr", "readxl", "ggplot2", "knitr", "parallel", "snow", "biomaRt", "GenomicRanges", "nlme", "lme4", "lattice", "MASS", "rmarkdown", "lmerTest", "car", "tibble", "stringr"))
 ```
 
 If you're having problems with the installation, please try:
