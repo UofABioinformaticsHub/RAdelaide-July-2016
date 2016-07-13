@@ -58,13 +58,13 @@ library(ggplot2)
 The main function is `ggplot()`
 
 - In this first stage we set the plotting aesthetics using `aes()`
-- This amounts to: What goes on the x & y axes, what defines the colour/shape etc.
+- Defines what is plotted on which axis, what defines the colour/shape etc.
 
 ```{r, fig.show='hide'}
 ggplot(data, aes(x = weight, y = height))
 ```
 
-When we do this, nothing will be plotted. We get the plot area only...
+No data will be plotted. We get the plot area only...
 
 ## The package `ggplot2` | geometry
 
@@ -105,14 +105,14 @@ ggplot(data, aes(x = weight, y = height,
 
 ## The package `ggplot2` | aesthetics
 
-It can be a good idea to put the general aesthetics in `ggplot()`, with the `geom_point()` specific ones in that line
+We can put the general aesthetics in `ggplot()`, with the `geom_point()` specific ones in that line
 
 ```{r}
 ggplot(data, aes(x = weight, y = height)) +
   geom_point(aes(colour = transport, shape = gender))
 ```
 
-Point aesthetics set outside of `aes()` are general across all the data
+Aesthetics set outside of `aes()` are general across all points
 
 ```{r}
 ggplot(data, aes(x = weight, y = height)) +
@@ -175,9 +175,9 @@ ggplot(data, aes(x = gender, y =height, fill = gender)) +
   geom_boxplot()
 ```
 
-## The package `ggplot2` | Different geoms
+## The package `ggplot2` | `geom_bar()`
 
-We could extract summaries from our data, then _pipe_ them into `ggplot()`
+We can summarise our data, then _pipe_ into `ggplot()`
 
 ```{r}
 data %>%
@@ -189,11 +189,9 @@ data %>%
   guides(fill =FALSE)
 ```
 
-`geom_bar()` requires `stat = "identity"`
+NB: `geom_bar()` requires `stat = "identity"`
 
-## The package `ggplot2` | Different geoms
-
-We can add error bars
+## The package `ggplot2` | `geom_errorbar()`
 
 ```{r}
 data %>%
@@ -208,11 +206,11 @@ data %>%
   guides(fill =FALSE)
 ```
 
-## The package `ggplot2` | Different geoms
+## The package `ggplot2` | `geom_line()`
 
-Let's move the PCR data using `pcr_long`
+Using `pcr_long`, we left the time-point as a character string 
 
-NB: We've left the time-point as a character string, but we can fix this before plotting
+We can fix this before plotting
 
 ```{r}
 pcr_long %>%

@@ -140,12 +140,12 @@
 
 <ul>
 <li>In this first stage we set the plotting aesthetics using <code>aes()</code></li>
-<li>This amounts to: What goes on the x &amp; y axes, what defines the colour/shape etc.</li>
+<li>Defines what is plotted on which axis, what defines the colour/shape etc.</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>ggplot(data, aes(x = weight, y = height))</pre>
 
-<p>When we do this, nothing will be plotted. We get the plot area only&#8230;</p>
+<p>No data will be plotted. We get the plot area only&#8230;</p>
 
 </article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> geometry</h3></hgroup><article  id="the-package-ggplot2-geometry">
 
@@ -175,12 +175,12 @@
 
 </article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> aesthetics</h3></hgroup><article  id="the-package-ggplot2-aesthetics-2">
 
-<p>It can be a good idea to put the general aesthetics in <code>ggplot()</code>, with the <code>geom_point()</code> specific ones in that line</p>
+<p>We can put the general aesthetics in <code>ggplot()</code>, with the <code>geom_point()</code> specific ones in that line</p>
 
 <pre class = 'prettyprint lang-r'>ggplot(data, aes(x = weight, y = height)) +
   geom_point(aes(colour = transport, shape = gender))</pre>
 
-<p>Point aesthetics set outside of <code>aes()</code> are general across all the data</p>
+<p>Aesthetics set outside of <code>aes()</code> are general across all points</p>
 
 <pre class = 'prettyprint lang-r'>ggplot(data, aes(x = weight, y = height)) +
   geom_point(aes(colour = transport, shape = gender), size = 4)</pre>
@@ -228,9 +228,9 @@
 <pre class = 'prettyprint lang-r'>ggplot(data, aes(x = gender, y =height, fill = gender)) +
   geom_boxplot()</pre>
 
-</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> Different geoms</h3></hgroup><article  id="the-package-ggplot2-different-geoms-1">
+</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> <code>geom_bar()</code></h3></hgroup><article  id="the-package-ggplot2-geom_bar">
 
-<p>We could extract summaries from our data, then <em>pipe</em> them into <code>ggplot()</code></p>
+<p>We can summarise our data, then <em>pipe</em> into <code>ggplot()</code></p>
 
 <pre class = 'prettyprint lang-r'>data %&gt;%
   group_by(transport, gender) %&gt;%
@@ -240,11 +240,9 @@
   facet_wrap(~gender) +
   guides(fill =FALSE)</pre>
 
-<p><code>geom_bar()</code> requires <code>stat = &quot;identity&quot;</code></p>
+<p>NB: <code>geom_bar()</code> requires <code>stat = &quot;identity&quot;</code></p>
 
-</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> Different geoms</h3></hgroup><article  id="the-package-ggplot2-different-geoms-2">
-
-<p>We can add error bars</p>
+</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> <code>geom_errorbar()</code></h3></hgroup><article  id="the-package-ggplot2-geom_errorbar">
 
 <pre class = 'prettyprint lang-r'>data %&gt;%
   group_by(transport, gender) %&gt;%
@@ -257,11 +255,11 @@
   facet_wrap(~gender) +
   guides(fill =FALSE)</pre>
 
-</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> Different geoms</h3></hgroup><article  id="the-package-ggplot2-different-geoms-3">
+</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> <code>geom_line()</code></h3></hgroup><article  id="the-package-ggplot2-geom_line">
 
-<p>Let&#39;s move the PCR data using <code>pcr_long</code></p>
+<p>Using <code>pcr_long</code>, we left the time-point as a character string</p>
 
-<p>NB: We&#39;ve left the time-point as a character string, but we can fix this before plotting</p>
+<p>We can fix this before plotting</p>
 
 <pre class = 'prettyprint lang-r'>pcr_long %&gt;%
   mutate(TimePoint = str_replace(TimePoint, &quot;hr&quot;, &quot;&quot;)) %&gt;%
