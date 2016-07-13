@@ -176,7 +176,7 @@ ncol(data)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Starting with <code>dplyr</code> </h2><h3> The <code>select()</code> function</h3></hgroup><article  id="starting-with-dplyr-the-select-function">
 
-<p>The first row is the rownames from the original file.</p>
+<p>The first row is the row names from the original file.</p>
 
 <p><strong>How can we remove this column?</strong></p>
 
@@ -186,7 +186,7 @@ ncol(data)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Starting with <code>dplyr</code> </h2><h3> The <code>select()</code> function</h3></hgroup><article  id="starting-with-dplyr-the-select-function-1">
 
-<p>The first row is the rownames from the original file.</p>
+<p>The first row is the row names from the original file.</p>
 
 <p><strong>How can we remove this column?</strong></p>
 
@@ -273,7 +273,7 @@ arrange(data, transport, height)</pre>
 
 <pre class = 'prettyprint lang-r'>data %&gt;% filter(transport == &quot;bike&quot;) %&gt;% arrange(weight)</pre>
 
-<p>There is <strong>no limit</strong> to the number of functions you can chain togther</p>
+<p>There is <strong>no limit</strong> to the number of functions you can chain together</p>
 
 </article></slide><slide class=''><hgroup><h2>Combining Functions </h2><h3> For the technically minded</h3></hgroup><article  id="combining-functions-for-the-technically-minded">
 
@@ -311,9 +311,176 @@ arrange(data, transport, height)</pre>
          BMI = weight / height_m^2) %&gt;%
   filter(BMI &gt; 25)</pre>
 
+</article></slide><slide class=''><hgroup><h2>Getting Summaries</h2></hgroup><article  id="getting-summaries">
+
+<p>Again, this is where <code>dplyr</code> really makes it easy.</p>
+
+<pre class = 'prettyprint lang-r'>data %&gt;% summarise(mean(weight), mean(height))</pre>
+
+<pre class = 'prettyprint lang-r'>data %&gt;% summarise_each(funs(mean, sd), ends_with(&quot;ght&quot;))</pre>
+
 </article></slide><slide class=''><hgroup><h2>Getting Group Summaries</h2></hgroup><article  id="getting-group-summaries">
 
-<p>Again, this is where <code>dplyr</code> really makes it easy</p></article></slide>
+<p>We can group categorical variables by their levels</p>
+
+<pre class = 'prettyprint lang-r'>data %&gt;%
+  group_by(gender) %&gt;%
+  summarise_each(funs(mean), ends_with(&quot;ght&quot;))</pre>
+
+</article></slide><slide class=''><hgroup><h2>Getting Group Summaries</h2></hgroup><article  id="getting-group-summaries-1">
+
+<p>Or combinations of levels</p>
+
+<pre class = 'prettyprint lang-r'>data %&gt;%
+  group_by(gender, transport) %&gt;%
+  summarise_each(funs(mean), ends_with(&quot;ght&quot;))</pre>
+
+<p>We can use any function that spits out a single value</p>
+
+<ul>
+<li><code>sd()</code>, <code>min()</code>, <code>median()</code></li>
+<li>Plus the function <code>n()</code></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Getting Group Summaries</h2></hgroup><article  id="getting-group-summaries-2">
+
+<pre class = 'prettyprint lang-r'>data %&gt;%
+  group_by(gender, transport) %&gt;%
+  summarise(mn_weight = mean(weight),
+            mn_height = mean(height),
+            n = n())</pre>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Reshaping your data</h2></hgroup><article  id="reshaping-your-data">
+
+</article></slide><slide class=''><hgroup><h2>Reshaping your data</h2></hgroup><article  id="reshaping-your-data-1">
+
+<p>This dataset is in what we refer to as <code>wide</code> form</p>
+
+<ul>
+<li>We have a row of measurements for each individual</li>
+<li>The information is <em>structured around the individual</em></li>
+<li>In <code>long</code> form, the information is <em>structured around the measurement</em></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping your data </h2><h3> From Wide to Long</h3></hgroup><article  id="reshaping-your-data-from-wide-to-long">
+
+<pre class = 'prettyprint lang-r'>library(reshape2)
+library(readr)</pre>
+
+<pre class = 'prettyprint lang-r'>wideData &lt;- read_csv(&quot;data/wide.csv&quot;)</pre>
+
+<p>This is a time course for two treatments</p>
+
+<pre class = 'prettyprint lang-r'>melt(wideData, id.vars = c(&quot;Name&quot;, &quot;Tx&quot;))</pre>
+
+<p>Many functions require data to be in this format</p>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping your data </h2><h3> From Wide to Long</h3></hgroup><article  id="reshaping-your-data-from-wide-to-long-1">
+
+<p>We don&#39;t need to leave those names as <code>variable</code> and <code>value</code></p>
+
+<pre class = 'prettyprint lang-r'>wideData %&gt;%
+  melt(id.vars = c(&quot;Name&quot;, &quot;Tx&quot;),
+       variable.name = &quot;Day&quot;, 
+       value.name = &quot;Change&quot;) </pre>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping your data</h2></hgroup><article  id="reshaping-your-data-2">
+
+<ol>
+<li><strong>How could we get means for each treatment/day from the original data?</strong></li>
+<li><strong>How can we get the same from the data after &quot;melting&quot;?</strong></li>
+</ol>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping your data</h2></hgroup><article  id="reshaping-your-data-3">
+
+<p>1 <strong>How could we get means for each treatment/day from the original data?</strong></p>
+
+<pre class = 'prettyprint lang-r'>wideData %&gt;% 
+  group_by(Tx) %&gt;%
+  summarise_each(funs(mean), starts_with(&quot;day&quot;))</pre>
+
+<p>2 <strong>How can we get the same from the data after &quot;melting&quot;?</strong></p>
+
+<pre class = 'prettyprint lang-r'>wideData %&gt;%
+  melt(id.vars = c(&quot;Name&quot;, &quot;Tx&quot;),
+       variable.name = &quot;Day&quot;, 
+       value.name = &quot;Change&quot;) %&gt;%
+  group_by(Tx, Day) %&gt;%
+  summarise(mn_change = mean(Change))</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping your data </h2><h3> From Long To Wide</h3></hgroup><article  id="reshaping-your-data-from-long-to-wide">
+
+<p>Let&#39;s save that last summary <code>data.frame</code></p>
+
+<pre class = 'prettyprint lang-r'>wideMeans &lt;- wideData %&gt;%
+  melt(id.vars = c(&quot;Name&quot;, &quot;Tx&quot;),
+       variable.name = &quot;Day&quot;, 
+       value.name = &quot;Change&quot;) %&gt;%
+  group_by(Tx, Day) %&gt;%
+  summarise(mn_change = mean(Change))</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping your data </h2><h3> From Long To Wide</h3></hgroup><article  id="reshaping-your-data-from-long-to-wide-1">
+
+<p>We can change from long to wide using the <code>formula</code> syntax</p>
+
+<ul>
+<li>&quot;<code>~</code>&quot; stands for <em>is a function of</em>, or <em>depends on</em></li>
+<li>The function <code>dcast</code> uses it to define rows on the LHS and columns on the RHS</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>dcast(wideMeans, Tx~Day)
+dcast(wideMeans, Day~Tx)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reshaping your data </h2><h3> From Long To Wide</h3></hgroup><article  id="reshaping-your-data-from-long-to-wide-2">
+
+<p>Would we ever use both?</p>
+
+<pre class = 'prettyprint lang-r'>pcr &lt;- read_csv(&quot;data/PCR.csv&quot;)</pre>
+
+<p>Here we have 3 genes being measured in 2 cell types, across 3 time-points</p>
+
+<p>The first part is easy:</p>
+
+<pre class = 'prettyprint lang-r'>melt(pcr, id.vars = &quot;Gene&quot;, variable.name = &quot;CellType&quot;, value.name = &quot;Ct&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Text Manipulation</h2></hgroup><article  id="text-manipulation">
+
+<p>We might like to split those names into the two cell types and 3 time-points.</p>
+
+<ul>
+<li>Use the functions <code>str_extract()</code> and <code>str_replace()</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>library(stringr)
+pcr %&gt;%
+  melt(id.vars = &quot;Gene&quot;,
+       variable.name = &quot;CellType&quot;, value.name = &quot;Ct&quot;) %&gt;%
+  mutate(TimePoint = str_extract(CellType, &quot;(Baseline|12hr|24hr)&quot;),
+         CellType = str_replace(CellType, &quot;_(Baseline|12hr|24hr)&quot;, &quot;&quot;)) </pre>
+
+</article></slide><slide class=''><hgroup><h2>Text Manipulation</h2></hgroup><article  id="text-manipulation-1">
+
+<p>Now we could make it wide (but not as wide)</p>
+
+<pre class = 'prettyprint lang-r'>pcr %&gt;%
+  melt(id.vars = &quot;Gene&quot;, 
+       variable.name = &quot;CellType&quot;, value.name = &quot;Ct&quot;) %&gt;%
+  mutate(TimePoint = str_extract(CellType, &quot;(Baseline|12hr|24hr)&quot;),
+         CellType = str_replace(CellType, &quot;_(Baseline|12hr|24hr)&quot;, &quot;&quot;)) %&gt;%
+  dcast(Gene + CellType ~ TimePoint, value.var = &quot;Ct&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Challenge</h2></hgroup><article  id="challenge">
+
+<p>To investigate the effect of fitness, gender, country of origin on red blood cell count (RBC), you have been given <code>challenge.csv</code> with observations made on 500 subjects. The variables are:</p>
+
+<ol>
+<li><strong>gender</strong>: male or female.</li>
+<li><strong>fitness</strong>: a measure of fitness lying between 0 and 100.</li>
+<li><strong>country</strong>: there are three countries denoted by 1, 2, or 3.</li>
+<li><strong>RBC</strong>: red blood cell count in millions/\(\mu\)L.</li>
+</ol>
+
+<p><strong>Clean the data entirely in R</strong></p></article></slide>
 
 
   <slide class="backdrop"></slide>

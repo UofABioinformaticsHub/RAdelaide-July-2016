@@ -72,7 +72,7 @@ ncol(data)
 
 ## Starting with `dplyr` | The `select()` function
 
-The first row is the rownames from the original file.
+The first row is the row names from the original file.
 
 __How can we remove this column?__
 
@@ -85,7 +85,7 @@ select(data, gender, name, weight, height, transport)
 
 ## Starting with `dplyr` | The `select()` function
 
-The first row is the rownames from the original file.
+The first row is the row names from the original file.
 
 __How can we remove this column?__
 
@@ -192,7 +192,7 @@ data %>% filter(transport == "bike")
 data %>% filter(transport == "bike") %>% arrange(weight)
 ```
 
-There is __no limit__ to the number of functions you can chain togther
+There is __no limit__ to the number of functions you can chain together
 
 ## Combining Functions | For the technically minded
 
@@ -245,6 +245,213 @@ data %>%
   filter(BMI > 25)
 ```
 
+## Getting Summaries
+
+Again, this is where `dplyr` really makes it easy.
+
+
+```r
+data %>% summarise(mean(weight), mean(height))
+```
+
+
+```r
+data %>% summarise_each(funs(mean, sd), ends_with("ght"))
+```
+
 ## Getting Group Summaries
 
-Again, this is where `dplyr` really makes it easy
+We can group categorical variables by their levels
+
+
+```r
+data %>%
+  group_by(gender) %>%
+  summarise_each(funs(mean), ends_with("ght"))
+```
+
+## Getting Group Summaries
+
+Or combinations of levels
+
+
+```r
+data %>%
+  group_by(gender, transport) %>%
+  summarise_each(funs(mean), ends_with("ght"))
+```
+
+We can use any function that spits out a single value
+
+- `sd()`, `min()`, `median()`
+- Plus the function `n()`
+
+## Getting Group Summaries
+
+
+```r
+data %>%
+  group_by(gender, transport) %>%
+  summarise(mn_weight = mean(weight),
+            mn_height = mean(height),
+            n = n())
+```
+
+
+# Reshaping your data
+
+## Reshaping your data
+
+This dataset is in what we refer to as `wide` form
+
+- We have a row of measurements for each individual
+- The information is _structured around the individual_
+- In `long` form, the information is _structured around the measurement_
+
+## Reshaping your data | From Wide to Long
+
+
+```r
+library(reshape2)
+library(readr)
+```
+
+
+```r
+wideData <- read_csv("data/wide.csv")
+```
+
+This is a time course for two treatments
+
+
+```r
+melt(wideData, id.vars = c("Name", "Tx"))
+```
+
+Many functions require data to be in this format
+
+## Reshaping your data | From Wide to Long
+
+We don't need to leave those names as `variable` and `value`
+
+
+```r
+wideData %>%
+  melt(id.vars = c("Name", "Tx"),
+       variable.name = "Day", 
+       value.name = "Change") 
+```
+
+
+## Reshaping your data
+
+1. __How could we get means for each treatment/day from the original data?__
+2. __How can we get the same from the data after "melting"?__
+
+## Reshaping your data
+
+1 __How could we get means for each treatment/day from the original data?__
+
+
+```r
+wideData %>% 
+  group_by(Tx) %>%
+  summarise_each(funs(mean), starts_with("day"))
+```
+2 __How can we get the same from the data after "melting"?__
+
+
+```r
+wideData %>%
+  melt(id.vars = c("Name", "Tx"),
+       variable.name = "Day", 
+       value.name = "Change") %>%
+  group_by(Tx, Day) %>%
+  summarise(mn_change = mean(Change))
+```
+
+## Reshaping your data | From Long To Wide
+
+Let's save that last summary `data.frame`
+
+
+```r
+wideMeans <- wideData %>%
+  melt(id.vars = c("Name", "Tx"),
+       variable.name = "Day", 
+       value.name = "Change") %>%
+  group_by(Tx, Day) %>%
+  summarise(mn_change = mean(Change))
+```
+
+## Reshaping your data | From Long To Wide
+
+We can change from long to wide using the `formula` syntax
+
+- "`~`" stands for _is a function of_, or _depends on_
+- The function `dcast` uses it to define rows on the LHS and columns on the RHS
+
+
+```r
+dcast(wideMeans, Tx~Day)
+dcast(wideMeans, Day~Tx)
+```
+
+## Reshaping your data | From Long To Wide
+
+Would we ever use both?
+
+
+```r
+pcr <- read_csv("data/PCR.csv")
+```
+
+Here we have 3 genes being measured in 2 cell types, across 3 time-points
+
+The first part is easy:
+
+```r
+melt(pcr, id.vars = "Gene", variable.name = "CellType", value.name = "Ct")
+```
+
+## Text Manipulation
+
+We might like to split those names into the two cell types and 3 time-points.
+
+- Use the functions `str_extract()` and `str_replace()`
+
+
+```r
+library(stringr)
+pcr %>%
+  melt(id.vars = "Gene",
+       variable.name = "CellType", value.name = "Ct") %>%
+  mutate(TimePoint = str_extract(CellType, "(Baseline|12hr|24hr)"),
+         CellType = str_replace(CellType, "_(Baseline|12hr|24hr)", "")) 
+```
+
+## Text Manipulation
+
+Now we could make it wide (but not as wide)
+
+
+```r
+pcr %>%
+  melt(id.vars = "Gene", 
+       variable.name = "CellType", value.name = "Ct") %>%
+  mutate(TimePoint = str_extract(CellType, "(Baseline|12hr|24hr)"),
+         CellType = str_replace(CellType, "_(Baseline|12hr|24hr)", "")) %>%
+  dcast(Gene + CellType ~ TimePoint, value.var = "Ct")
+```
+
+## Challenge
+
+To investigate the effect of fitness, gender, country of origin on red blood cell count (RBC), you have been given `challenge.csv` with observations made on 500 subjects. The variables are:
+
+1. **gender**: male or female.
+2. **fitness**: a measure of fitness lying between 0 and 100. 
+3. **country**: there are three countries denoted by 1, 2, or 3.
+4. **RBC**: red blood cell count in millions/$\mu$L.
+
+__Clean the data entirely in R__
+
