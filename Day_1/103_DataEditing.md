@@ -166,3 +166,6 @@ Now we can get it right
 ```r
 missing_data <- read_csv("data/missing_data.csv", na = "-")
 ```
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2016/)
+</div>

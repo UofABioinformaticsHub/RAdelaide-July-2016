@@ -426,9 +426,11 @@ library(stringr)
 pcr %>%
   melt(id.vars = "Gene",
        variable.name = "CellType", value.name = "Ct") %>%
-  mutate(TimePoint = str_extract(CellType, "(Baseline|12hr|24hr)"),
-         CellType = str_replace(CellType, "_(Baseline|12hr|24hr)", "")) 
+  mutate(TimePoint = str_extract(CellType, "(0hr|12hr|24hr)"),
+         CellType = str_replace(CellType, "_(0hr|12hr|24hr)", "")) 
 ```
+
+**Save this as the object `pcr_long`**
 
 ## Text Manipulation
 
@@ -439,8 +441,8 @@ Now we could make it wide (but not as wide)
 pcr %>%
   melt(id.vars = "Gene", 
        variable.name = "CellType", value.name = "Ct") %>%
-  mutate(TimePoint = str_extract(CellType, "(Baseline|12hr|24hr)"),
-         CellType = str_replace(CellType, "_(Baseline|12hr|24hr)", "")) %>%
+  mutate(TimePoint = str_extract(CellType, "(0hr|12hr|24hr)"),
+         CellType = str_replace(CellType, "_(0hr|12hr|24hr)", "")) %>%
   dcast(Gene + CellType ~ TimePoint, value.var = "Ct")
 ```
 
@@ -455,3 +457,6 @@ To investigate the effect of fitness, gender, country of origin on red blood cel
 
 __Clean the data entirely in R__
 
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2016/)
+</div>
