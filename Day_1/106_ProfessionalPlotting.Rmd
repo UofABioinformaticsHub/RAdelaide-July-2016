@@ -311,4 +311,6 @@ grid.text("A", 0.05, 0.95)
 grid.text("B", 0.45, 0.95)
 ```
 
-
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2016/)
+</div>

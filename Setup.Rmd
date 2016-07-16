@@ -23,14 +23,22 @@ R Studio will usually automatically detect your most recent version of R and wil
 ## R Packages
 To install all required packages, please execute the following command in R.
 You can copy & paste straight from this page into R.
+If you have problems with the installation, see below.
 ```{r, eval=FALSE}
 source("http://uofabioinformaticshub.github.io/RAdelaide-July-2016/rAdelaideInstaller.R")
 ```
 
+## Browser
+
+Although not required, installing a plugin/addon for your browser which can view Markdown may be beneficial.
+Suitable viewers are [Markdown Viewer For Chrome](https://chrome.google.com/webstore/detail/markdown-viewer/ehnambpmkdhopilaccgfmojilolcglhn)
+or [Markdown Viewer For Firefox](https://addons.mozilla.org/en-US/firefox/addon/markdown-viewer/)
+
+
 ## Problems with installation
 
 If you receive an error message when running the above code, Steve will be available in the Bioinformatics Hub (Level 4, Santos Petroleum Engineering Building) from 4pm on Tuesday 19th July.
-If your error message was regarding the package `dplyr`please keep reading.
+If your error message was specifically regarding the package `dplyr`please keep reading.
 
 ### The package `dplyr`
 

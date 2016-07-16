@@ -296,4 +296,6 @@ grid.text("B", 0.45, 0.95)
 
 <img src="106_ProfessionalPlotting_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" />
 
-
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2016/)
+</div>

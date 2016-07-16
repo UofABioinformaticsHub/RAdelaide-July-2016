@@ -237,3 +237,6 @@ data %>%
   facet_wrap(~variable, scales = "free_y")
 ```
 
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2016/)
+</div>
