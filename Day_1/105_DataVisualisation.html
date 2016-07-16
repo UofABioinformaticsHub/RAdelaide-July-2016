@@ -112,7 +112,7 @@
           </hgroup>
   </slide>
 
-<slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Data Visualisation </h2><h3> Using the Package <code>ggplot2</code></h3></hgroup><article  id="data-visualisation-using-the-package-ggplot2">
+<slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Data Visualisation </h2><h3> Using the Package <code>ggplot2</code></h3></hgroup><article  id="data-visualisation-using-the-package-ggplot2">
 
 </article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code></h2></hgroup><article  id="the-package-ggplot2">
 
@@ -255,19 +255,32 @@
   facet_wrap(~gender) +
   guides(fill =FALSE)</pre>
 
-</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> <code>geom_line()</code></h3></hgroup><article  id="the-package-ggplot2-geom_line">
+</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> facets</h3></hgroup><article  id="the-package-ggplot2-facets-1">
 
-<p>Using <code>pcr_long</code>, we left the time-point as a character string</p>
+<p><strong>How could we get histograms for both <code>weight</code> and <code>height</code> using facets?</strong></p>
 
-<p>We can fix this before plotting</p>
+<ul>
+<li>The geom to use is <code>geom_histogram()</code></li>
+</ul>
 
-<pre class = 'prettyprint lang-r'>pcr_long %&gt;%
-  mutate(TimePoint = str_replace(TimePoint, &quot;hr&quot;, &quot;&quot;)) %&gt;%
-  ggplot(aes(x = as.integer(TimePoint), y =Ct, colour =Gene)) +
-  geom_line() +
-  geom_point() +
-  facet_wrap(~CellType, ncol = 1) +
-  labs(x = &quot;Time (hr)&quot;)</pre></article></slide>
+</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> facets</h3></hgroup><article  id="the-package-ggplot2-facets-2">
+
+<p><strong>How could we get histograms for both <code>weight</code> and <code>height</code> using facets?</strong></p>
+
+<pre class = 'prettyprint lang-r'>data %&gt;%
+  melt(id.vars = c(&quot;gender&quot;, &quot;name&quot;, &quot;transport&quot;)) %&gt;%
+  ggplot(aes(x = value, fill = variable)) +
+  geom_histogram(bins = 10, colour = &quot;black&quot;) +
+  facet_wrap(~variable, scales = &quot;free_x&quot;) +
+  guides(fill = FALSE)</pre>
+
+</article></slide><slide class=''><hgroup><h2>The package <code>ggplot2</code> </h2><h3> facets</h3></hgroup><article  id="the-package-ggplot2-facets-3">
+
+<pre class = 'prettyprint lang-r'>data %&gt;%
+  melt(id.vars = c(&quot;gender&quot;, &quot;name&quot;, &quot;transport&quot;)) %&gt;%
+  ggplot(aes(x =gender, y = value, fill = gender)) +
+  geom_boxplot() +
+  facet_wrap(~variable, scales = &quot;free_y&quot;)</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

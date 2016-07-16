@@ -11,10 +11,10 @@ source("https://bioconductor.org/biocLite.R")
 message("Checking any installed package versions are correct...\n")
 biocValid(fix = TRUE, ask = FALSE)
 packList <- c("magrittr", "dplyr", "reshape2", "readr", "readxl", "ggplot2", 
-              "knitr", "snow", "biomaRt", "GenomicRanges", 
+              "knitr", "snow", "biomaRt", "GenomicRanges", "ggthemes",
               "AnnotationHub", "VariantAnnotation", "rtracklayer", "topGO",
               "nlme", "lme4", "lattice", "MASS", "rmarkdown", "lmerTest", 
-              "car", "tibble", "stringr", "pander", "xtable")
+              "car", "tibble", "stringr", "pander", "xtable", "grid")
 installed <- rownames(installed.packages())
 notInstalled <- packList[!packList %in% installed]
 

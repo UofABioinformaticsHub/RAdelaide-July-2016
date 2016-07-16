@@ -162,6 +162,7 @@ ggplot(data, aes(x = gender, y =height, fill = gender)) +
   geom_boxplot()
 ```
 
+
 ## The package `ggplot2` | `geom_bar()`
 
 We can summarise our data, then _pipe_ into `ggplot()`
@@ -195,20 +196,34 @@ data %>%
   guides(fill =FALSE)
 ```
 
-## The package `ggplot2` | `geom_line()`
+## The package `ggplot2` | facets
 
-Using `pcr_long`, we left the time-point as a character string 
+__How could we get histograms for both `weight` and `height` using facets?__
 
-We can fix this before plotting
+- The geom to use is `geom_histogram()`
+
+## The package `ggplot2` | facets
+
+__How could we get histograms for both `weight` and `height` using facets?__
 
 
 ```r
-pcr_long %>%
-  mutate(TimePoint = str_replace(TimePoint, "hr", "")) %>%
-  ggplot(aes(x = as.integer(TimePoint), y =Ct, colour =Gene)) +
-  geom_line() +
-  geom_point() +
-  facet_wrap(~CellType, ncol = 1) +
-  labs(x = "Time (hr)")
+data %>%
+  melt(id.vars = c("gender", "name", "transport")) %>%
+  ggplot(aes(x = value, fill = variable)) +
+  geom_histogram(bins = 10, colour = "black") +
+  facet_wrap(~variable, scales = "free_x") +
+  guides(fill = FALSE)
+```
+
+## The package `ggplot2` | facets
+
+
+```r
+data %>%
+  melt(id.vars = c("gender", "name", "transport")) %>%
+  ggplot(aes(x =gender, y = value, fill = gender)) +
+  geom_boxplot() +
+  facet_wrap(~variable, scales = "free_y")
 ```
 
