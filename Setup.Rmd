@@ -11,7 +11,7 @@ output: html_document
 
 Please ensure you have the latest version of `R`.
 The current version (`R-3.3.1`) is available at http://cran.ms.unimelb.edu.au/
-Install this before installing `R Studio`
+`R` should be installed on your computer before installing `R Studio`
 
 
 ## R Studio
@@ -21,19 +21,18 @@ The current version(`RStudio 0.99.902`) is available at [https://www.rstudio.com
 R Studio will usually automatically detect your most recent version of R and will use this by default.
 
 ## R Packages
-To install all required packages, please execute the following commands in R (You can copy & paste both lines if you'd like):
+To install all required packages, please execute the following command in R.
+You can copy & paste straight from this page into R.
 ```{r, eval=FALSE}
-source("https://bioconductor.org/biocLite.R")
-biocLite(c("dlpyr", "reshape2", "readr", "readxl", "ggplot2", "knitr", "parallel", "snow", "biomaRt", "GenomicRanges", "nlme", "lme4", "lattice", "MASS", "rmarkdown", "lmerTest", "car", "tibble", "stringr"))
+source("http://uofabioinformaticshub.github.io/RAdelaide-July-2016/rAdelaideInstaller.R")
 ```
 
-If you're having problems with the installation, please try:
-```{r, eval=FALSE}
-biocValid(fix = TRUE)
-```
+## Problems with installation
 
+If you receive an error message when running the above code, Steve will be available in the Bioinformatics Hub (Level 4, Santos Petroleum Engineering Building) from 4pm on Tuesday 19th July.
+If your error message was regarding the package `dplyr`please keep reading.
 
-# Notes for Windows Users
+### The package `dplyr`
 
 Installing the package `dplyr` can be problematic on University laptops running Windows.
 If you are having problems, follow these steps:
@@ -42,7 +41,7 @@ If you are having problems, follow these steps:
 2. Create a new `Environment Variable` (see below) called `R_LIBS_USER` and give it the value `C:\R`.
 The steps below can guide you through this.
 
-## Windows 10 and Windows 8
+#### Windows 10 and Windows 8
 
 1. In Search, search for and then select: `System (Control Panel)`
 2. Click the `Advanced` system settings link.
@@ -50,7 +49,7 @@ The steps below can guide you through this.
 4. In the User Variables Section, click `New...`
 5. Name the New Variable `R_LIBS_USER` and specify the value `C:\R`
 
-## Windows 7
+#### Windows 7
 
 1. From the desktop, right click the Computer icon.
 2. Choose Properties from the context menu.
