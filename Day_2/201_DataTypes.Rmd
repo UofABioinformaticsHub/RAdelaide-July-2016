@@ -341,7 +341,9 @@ __What was the difference in the output?__
 1. Using `[]` returned the vector with the identical structure
 2. Using `[[]]` removed the `attributes` & just gave the value
 
-## Subsetting Vectors | Discussion Question
+## Subsetting Vectors 
+
+### Discussion Question
 
 __Is it better to call by position, or by name?__
 
