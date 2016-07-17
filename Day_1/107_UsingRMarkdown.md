@@ -8,47 +8,42 @@ Steve Pederson
 
 ## Writing Reports Using `rmarkdown`
 
-Now that we can load & tidy data, and make figures
-
 * `rmarkdown` is a cohesive way to
     + Load & tidy data 
     + Analyse data, including figures & tables
     + Publish everything in a complete report/analysis
-
-We can do this all in one document, with our analysis code embedded!
+* Everything is one document, with our analysis code embedded with our results
 
 *All sessions for RAdelaide were written this way*
 
 ## Writing Reports Using `rmarkdown`
 
-Using `rmarkdown` we can output our analysis directly as
+We can output our analysis directly as
 
 * HTML
 * MS Word Documents
 * PDF Documents 
 * Slidy or `ioslides` presentations
 
-We never need to use MS Word or Excel ever again!!!
+We never need to use MS Word, Excel or Powerpoint again!
 
 ## Writing Reports Using `rmarkdown`
 
-- The file format ends with `.Rmd` and allows us to include normal text alongside embedded `R` code.
-
-- We can create all of our figures & tables directly from the raw data, as well as
-    + Data or experimental descriptions
-    + Descriptions of every stage of the analysis
-    + Analytic conclusions
+- `.Rmd` files allow us to include normal text alongside embedded `R` code.
+    + Create all of our figures & tables directly from the raw data,
+    + Data, experimental and analytic descriptions
+    + Mathematical/Statistical equations
+    + Nicely Formatted Results
     + Any other information
 
-- We can easily format text and include complex equations along with our code.
 
 ## Creating an *R* Markdown document
 
 Let's create our first `rmarkdown` document
 
-1. Ensure you have `rmarkdown` installed
-2. Go to the `File` drop-down menu in RStudio
-3. New File -> R Markdown...
+1. Go to the `File` drop-down menu in RStudio
+2. New File -> R Markdown...
+
 
 ## The New R Markdown Form
 
@@ -62,58 +57,72 @@ Let's create our first `rmarkdown` document
 3. Leave everything else as it is & hit OK
 4. Save the file as `RMarkdownTutorial.Rmd`
 
-## The R Markdown Format
+## The R Markdown Format | The Header
  
-Looking at the file:
+* The header section is contained between the `---` lines
+    + __Nothing can be placed before this!__
+    + Uses YAML (**Y**AML **A**in't **M**arkup **L**anguage)
+    + Editing is beyond the scope of this course
+    + Can set custom `.css` files, load LaTeX packages etc
+    
+## The R Markdown Format | Code Chunks
+    
+* Lines 8 -- 10 are a code `chunk`
+    + Chunks always begin with ```{r}
+    + Chunks always end with ```
+    + The code goes between these two delineators
+    + Chunk names are optional and directly follow the `r`
+    + Other parameters are set here, e.g. do we show/hide the code
 
-* The header section is contained within the two \-\-\- delineation lines
-    + Nothing can be placed before this!
+## The R Markdown Format | File Structure
 
-* Lines 8 -- 10 are plain text
+* Line 12 is a Section Heading, starting with ##
+    + Click the _staggered text_ symbol in the top-right to open the _document outline_
+    + Chunk names are shown in _italics_
+    + Section Names in plain text
+    + Can resize the document outline window
+
+## The R Markdown Format | Text Formatting
+
+`Help > Markdown Quick Reference`
+
+- This describes the text formatting options: 
     + Bold is indicated by \*\*Knit\*\* (or \_\_Knit\_\_)
     + Italics can be indicated using a single asterisk/underline: \*Italics\* or \_Italics\_
 
-* Lines 12 -- 14 are a code `chunk`
-    + Chunks always begin with ^$\backprime \backprime \backprime$^{r}
-    + Chunks always end with ^$\backprime \backprime \backprime$^
-    + The code goes between these two delineators
+
     
-## The R Markdown Format
+## The R Markdown Format | Creating the Report
 
 - The default format is an `html_document` & we can change this later.
-- Generate the document by clicking `Knit HTML`
+- Generate the deafault document by clicking `Knit HTML`
 
 <img src="images/CompileHTML.png" width="800" style="display: block; margin: auto;" />
 
 
-## The R Markdown Format
+## The R Markdown Format | Creating the Report
 
 A preview window will appear with the compiled report
 
 - Note the hyperlink to the RMarkdown website & the bold typeface for the word **Knit**
 - The *R* code and the results are printed for the line `summary(cars)`
-- The plot of `speed` Vs. `distance has been embedded
+- The plot of `temperature` Vs. `pressure` has been embedded
 - The code generating the plot was hidden using `echo = FALSE`
 
     
-## The R Markdown Format
+## The R Markdown Format | Creating the Report
 
 We could also save this as an MS Word document (i.e. `.docx` format)
 
 <img src="images/KnitWord.png" width="800" style="display: block; margin: auto;" />
 
+## The R Markdown Format | Creating the Report
+
 By default, this will be Read-Only
 
-Saving as a `.PDF` may require an installation of \LaTeX.
+Saving as a `.PDF` may require an installation of LaTeX.
 
-## The R Markdown Format
-
-RStudio has a quick reference guide
-
-- Click the question mark at the top of your markdown script:
-    + The Quick Reference Guide will open in your **Help** tab
-    + The Using R Markdown link will open in your default browser
-- The Using R Markdown link also has a Cheat Sheet & A Reference Guide  available
+# Making our own report
 
 ## Making our own report
 

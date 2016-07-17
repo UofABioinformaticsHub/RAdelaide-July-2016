@@ -160,6 +160,20 @@ Now we can get it right
 ```{r}
 missing_data <- read_csv("data/missing_data.csv", na = "-")
 ```
+
+## Exporting Data
+
+After we've edited a file, we might wish to export it
+
+```{r}
+?write_csv
+```
+
+- This is a wrapper for `write_delim()`
+- Can export `.csv`, `.txt`, `.tsv` etc
+- Individual `R` objects can be exported using `write_rds()`
+
+
 <div class="footer" style="text-align:center;width:25%">
 [Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2016/)
 </div>

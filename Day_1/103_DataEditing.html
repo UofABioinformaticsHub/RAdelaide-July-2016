@@ -112,7 +112,7 @@
           </hgroup>
   </slide>
 
-<slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Data Cleaning</h2></hgroup><article  id="data-cleaning">
+<slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Data Cleaning</h2></hgroup><article  id="data-cleaning">
 
 </article></slide><slide class=''><hgroup><h2>Setup</h2></hgroup><article  id="setup">
 
@@ -240,6 +240,18 @@ colnames(bad_colnames) &lt;- c(&quot;rowname&quot;, &quot;gender&quot;, &quot;na
 <p>Now we can get it right</p>
 
 <pre class = 'prettyprint lang-r'>missing_data &lt;- read_csv(&quot;data/missing_data.csv&quot;, na = &quot;-&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Exporting Data</h2></hgroup><article  id="exporting-data">
+
+<p>After we&#39;ve edited a file, we might wish to export it</p>
+
+<pre class = 'prettyprint lang-r'>?write_csv</pre>
+
+<ul>
+<li>This is a wrapper for <code>write_delim()</code></li>
+<li>Can export <code>.csv</code>, <code>.txt</code>, <code>.tsv</code> etc</li>
+<li>Individual <code>R</code> objects can be exported using <code>write_rds()</code></li>
+</ul>
 
 <div class="footer" style="text-align:center;width:25%">
 <p><a href='http://uofabioinformaticshub.github.io/RAdelaide-July-2016/' title=''>Home</a></p></div></article></slide>
