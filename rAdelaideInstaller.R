@@ -14,7 +14,9 @@ packList <- c("magrittr", "dplyr", "reshape2", "readr", "readxl", "ggplot2",
               "knitr", "snow", "biomaRt", "GenomicRanges", "ggthemes",
               "AnnotationHub", "VariantAnnotation", "rtracklayer", "topGO",
               "nlme", "lme4", "lattice", "MASS", "rmarkdown", "lmerTest", 
-              "car", "tibble", "stringr", "pander", "xtable", "grid")
+              "car", "tibble", "stringr", "pander", "xtable", "grid",
+              "ascii", "arm", "contrast", "effects", "visreg", "lsmeans", "MCMCglmm",
+              "mgcv", "mlmRev", "multcomp", "MuMIn", "pscl", "RLRsim", "visreg")
 installed <- rownames(installed.packages())
 notInstalled <- packList[!packList %in% installed]
 
