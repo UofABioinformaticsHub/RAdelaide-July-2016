@@ -379,6 +379,244 @@ fisherFun(snps$SNP1, snps$Population, conf.level = 0.99)</pre>
 
 </article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Using Functions Repetitively</h2></hgroup><article  id="using-functions-repetitively">
 
+</article></slide><slide class=''><hgroup><h2>Using <code>lapply</code></h2></hgroup><article  id="using-lapply">
+
+<p>Now we have a function which works on one SNP</p>
+
+<ul>
+<li>How do we apply this to all 2000?</li>
+</ul>
+
+<p><code>R</code> has a very handy function <code>lapply()</code></p>
+
+<pre class = 'prettyprint lang-r'>?lapply</pre>
+
+</article></slide><slide class=''><hgroup><h2>Using <code>lapply</code></h2></hgroup><article  id="using-lapply-1">
+
+<p>This stands for <code>l</code>ist <code>apply()</code></p>
+
+<ul>
+<li>We literally apply this function to every element of a <code>list</code></li>
+<li>Remember a <code>data.frame</code> is a <code>list</code></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Using <code>lapply</code></h2></hgroup><article  id="using-lapply-2">
+
+<p>A simple example:</p>
+
+<pre class = 'prettyprint lang-r'>x &lt;- list(int = 1:10, norm = rnorm(100))</pre>
+
+<p>Here we have made a list <code>x</code> with two components <code>int</code> and <code>norm</code></p>
+
+<pre class = 'prettyprint lang-r'>lapply(x, mean)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Using <code>lapply</code></h2></hgroup><article  id="using-lapply-3">
+
+<p>We could place any sensible function here</p>
+
+<pre class = 'prettyprint lang-r'>lapply(x, head)
+lapply(x, min)
+lapply(x, typeof)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Using <code>lapply</code></h2></hgroup><article  id="using-lapply-4">
+
+<p>Note the <code>...</code></p>
+
+<ul>
+<li><code>lapply()</code> places each element of the list (i.e. <code>X</code>) as the <em>first argument</em> of <code>FUN</code></li>
+<li>Any other arguments are named and specified here</li>
+<li>They will not be iterated over<br/>We can use <code>mapply()</code> for that if required</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Alternatives to <code>lapply()</code></h2></hgroup><article  id="alternatives-to-lapply">
+
+<p>In all the above, the output was a list the same length as the input.</p>
+
+<h4><code>sapply()</code> attempts to simplify the output</h4>
+
+<pre class = 'prettyprint lang-r'>sapply(x, mean)
+sapply(x, range)</pre>
+
+<ul>
+<li>Can be useful, but sometimes unpredictable</li>
+<li>Only use if you&#39;re sure of the structure of the output</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Alternatives to <code>lapply()</code></h2></hgroup><article  id="alternatives-to-lapply-1">
+
+<p>In all the above, the output was a list the same length as the input.</p>
+
+<h4><code>vapply()</code> requires the output structure be defined</h4>
+
+<pre class = 'prettyprint lang-r'>vapply(x, mean, numeric(1))
+vapply(x, range, numeric(2))</pre>
+
+</article></slide><slide class=''><hgroup><h2>Alternatives to <code>lapply()</code></h2></hgroup><article  id="alternatives-to-lapply-2">
+
+<p>The function <code>apply()</code> can be applied to matrices/arrays</p>
+
+<pre class = 'prettyprint lang-r'>?apply</pre>
+
+<ul>
+<li><code>MARGIN = 1</code> applies the function by row</li>
+<li><code>MARGIN = 2</code> applies the function by column</li>
+<li><code>MARGIN = 3</code> for 3-d arrays etc.</li>
+</ul>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Back To The SNP Data</h2></hgroup><article  id="back-to-the-snp-data">
+
+</article></slide><slide class=''><hgroup><h2>Back To The SNP Data</h2></hgroup><article  id="back-to-the-snp-data-1">
+
+<p>Our data is a <code>data.frame</code> (i.e. a <code>list</code>)<br/>\(\implies\) can use <code>lapply()</code></p>
+
+<pre class = 'prettyprint lang-r'>vapply(snps, anyNA, logical(1))</pre>
+
+<p>We could even chain together functions</p>
+
+<pre class = 'prettyprint lang-r'>snps %&gt;%
+  lapply(is.na) %&gt;%
+  sapply(mean)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Back To The SNP Data </h2><h3> Applying <code>fisherFun()</code></h3></hgroup><article  id="back-to-the-snp-data-applying-fisherfun">
+
+<p>Our output is a <code>data.frame</code></p>
+
+<p><strong>Should we use <code>lapply()</code> or <code>sapply()</code>?</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Back To The SNP Data </h2><h3> Applying <code>fisherFun()</code></h3></hgroup><article  id="back-to-the-snp-data-applying-fisherfun-1">
+
+<p>Let&#39;s do a quick test</p>
+
+<pre class = 'prettyprint lang-r'>lapply(snps[2:3], fisherFun, pop = snps$Population)
+sapply(snps[2:3], fisherFun, pop = snps$Population)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Back To The SNP Data </h2><h3> Applying <code>fisherFun()</code></h3></hgroup><article  id="back-to-the-snp-data-applying-fisherfun-2">
+
+<p>One <code>dplyr</code> function we haven&#39;t seen yet: <code>bind_rows()</code></p>
+
+<pre class = 'prettyprint lang-r'>snps[2:3] %&gt;%
+  lapply(fisherFun, pop = snps$Population) %&gt;%
+  bind_rows()</pre>
+
+<p>We can use this to combine all our results!</p>
+
+</article></slide><slide class=''><hgroup><h2>Back To The SNP Data </h2><h3> Applying <code>fisherFun()</code></h3></hgroup><article  id="back-to-the-snp-data-applying-fisherfun-3">
+
+<p>Here&#39;s my actual analysis</p>
+
+<pre class = 'prettyprint lang-r'>results &lt;- snps[-1] %&gt;%
+  lapply(fisherFun, pop = snps$Population) %&gt;%
+  bind_rows() %&gt;%
+  mutate(SNP = names(snps)[-1],
+         adjP = p.adjust(p.value, method = &quot;bonferroni&quot;)) %&gt;%
+  arrange(p.value) %&gt;%
+  select(SNP, everything())</pre>
+
+</article></slide><slide class=''><hgroup><h2>Back To The SNP Data </h2><h3> Applying <code>fisherFun()</code></h3></hgroup><article  id="back-to-the-snp-data-applying-fisherfun-4">
+
+<pre class = 'prettyprint lang-r'>head(results)</pre>
+
+<pre >##       SNP   Control     Treat      p.value         adjP
+## 1 SNP1716 0.6132075 0.0900000 5.995601e-16 1.199120e-12
+## 2 SNP1236 0.6320755 0.1078431 1.234748e-15 2.469497e-12
+## 3  SNP603 0.3846154 0.8921569 8.474637e-15 1.694927e-11
+## 4 SNP1271 0.4230769 0.9183673 1.357034e-14 2.714068e-11
+## 5 SNP1501 0.3301887 0.8431373 2.380582e-14 4.761164e-11
+## 6  SNP248 0.5849057 0.1000000 6.181343e-14 1.236269e-10</pre>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Running in Parallel</h2></hgroup><article  id="running-in-parallel">
+
+</article></slide><slide class=''><hgroup><h2>Running in Parallel</h2></hgroup><article  id="running-in-parallel-1">
+
+<p>The package <code>parallel</code> has a function <code>mclapply()</code></p>
+
+<ul>
+<li>This stands for <code>m</code>ulti<code>c</code>ore <code>lapply()</code></li>
+<li>This is literally all we need to run in parallel</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>library(parallel)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Running in Parallel</h2></hgroup><article  id="running-in-parallel-2">
+
+<ul>
+<li>Can treat each CPU/hyperthread as a node in a cluster</li>
+<li>Always some overhead setting up the &quot;cluster&quot;</li>
+<li>I usually leave at least one node free to &quot;drive&quot; things</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Running in Parallel</h2></hgroup><article  id="running-in-parallel-3">
+
+<pre class = 'prettyprint lang-r'>results &lt;- snps[-1] %&gt;%
+  mclapply(fisherFun, pop = snps$Population, mc.cores = 3) %&gt;%
+  bind_rows() %&gt;%
+  mutate(SNP = names(snps)[-1],
+         adjP = p.adjust(p.value, method = &quot;bonferroni&quot;)) %&gt;%
+  arrange(p.value) %&gt;%
+  select(SNP, everything())</pre>
+
+</article></slide><slide class=''><hgroup><h2>Running in Parallel</h2></hgroup><article  id="running-in-parallel-4">
+
+<p>Check the times (using my dual-core i7 laptop)</p>
+
+<pre class = 'prettyprint lang-r'>times &lt;- list(
+  series = system.time(lapply(snps[-1], 
+                              fisherFun, 
+                              pop = snps$Population)),
+  parallel = system.time(mclapply(snps[-1], 
+                                  fisherFun, 
+                                  pop = snps$Population,
+                                  mc.cores = 3))
+)</pre>
+
+<ul>
+<li>Running in series took 2.534 sec</li>
+<li>Running in parallel took 1.446 sec</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Running in Parallel</h2></hgroup><article  id="running-in-parallel-5">
+
+<p>With 3 cores: a speed up of 1.75-fold</p>
+
+<p>Now imagine a set of 25,000 SNPs with pair-wise comparisons required for linkage</p>
+
+<ul>
+<li>That&#39;s 312,487,500 comparisons</li>
+<li>Process went from &gt; 2 weeks to ~2 days using 20 cores</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Advanced Parallel Programming</h2></hgroup><article  id="advanced-parallel-programming">
+
+<p><code>mclapply()</code>:</p>
+
+<ul>
+<li>invisibly sets up <code>mc.cores</code> identical R sessions</li>
+<li>subsets the data sequentially</li>
+<li>runs the function</li>
+<li>closes the sessions &amp; returns the results</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Advanced Parallel Programming</h2></hgroup><article  id="advanced-parallel-programming-1">
+
+<p>The package <code>snow</code> allows us to configure each node manually</p>
+
+<ul>
+<li>Can export specific SNPs to specific nodes</li>
+<li>Need to export all required functions to each node</li>
+<li>Need to load all packages on each node</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Conclusion</h2></hgroup><article  id="conclusion">
+
+<p>When writing functions, the <strong>order</strong> of arguments can be important</p>
+
+<ul>
+<li>Not only for <code>lapply()</code></li>
+<li>Remember <code>%&gt;%</code> places the output of a function into the <strong>first position</strong> of the next function</li>
+</ul>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>VM Setup Time</h2></hgroup><article  id="vm-setup-time">
+
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
 <div class="footer" style="text-align:center;width:25%">
