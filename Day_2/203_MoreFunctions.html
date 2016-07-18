@@ -171,6 +171,7 @@ myMean(testVec, na.rm = TRUE)</pre>
 
 <pre class = 'prettyprint lang-r'>library(readr)
 library(dplyr)
+library(reshape2)
 snps &lt;- read_csv(&quot;data/snps.csv&quot;)
 dim(snps)</pre>
 
@@ -198,15 +199,185 @@ dim(snps)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Our Task</h2></hgroup><article  id="our-task">
 
-<p>Write a function that performs a Fisher&#39;s Exact Test on each allele</p>
+<p>Write a function that performs a Fisher&#39;s Exact Test on each allele, comparing the allele structure across populations</p>
 
 <p>For each SNP, we need to:</p>
 
 <ol>
-<li>Form a 3 \(\times\) 2 table</li>
+<li>Form a 2 \(\times\) 2 table</li>
 <li>Perform the test</li>
 <li>Format our output into a <code>data_frame</code> (or <code>tibble</code>)</li>
 </ol>
+
+</article></slide><slide class=''><hgroup><h2>Starting Our Function</h2></hgroup><article  id="starting-our-function">
+
+<p>The best place to start is just working with a single SNP</p>
+
+<p><strong>What information do we need?</strong></p>
+
+<ol>
+<li>The Population Structure</li>
+<li>The Genotypes</li>
+</ol>
+
+<pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop){
+  
+}</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Forming The Table</h3></hgroup><article  id="writing-our-function-forming-the-table">
+
+<p>Forming a table of alleles:</p>
+
+<ul>
+<li>Could use <code>group_by()</code> then <code>summarise()</code> <code>acast()</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>snps[1:2] %&gt;% 
+  group_by(Population, SNP1) %&gt;% 
+  summarise(count = n()) %&gt;%
+  filter(!is.na(SNP1)) %&gt;%
+  acast(Population~SNP1, value.var = &quot;count&quot;)</pre>
+
+<pre >##         AA AB BB
+## Control 13 30 10
+## Treat    8 19 21</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Forming The Table</h3></hgroup><article  id="writing-our-function-forming-the-table-1">
+
+<p>Forming a table of genotypes:</p>
+
+<ul>
+<li>An easier way is to use <code>table()</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>table(snps$Population, snps$SNP1)</pre>
+
+<pre >##          
+##           AA AB BB
+##   Control 13 30 10
+##   Treat    8 19 21</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Forming The Table</h3></hgroup><article  id="writing-our-function-forming-the-table-2">
+
+<pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop){
+ genoTable &lt;- table(pop, snp) 
+ return(genoTable)
+}
+fisherFun(snps$SNP1, snps$Population)</pre>
+
+<pre >##          snp
+## pop       AA AB BB
+##   Control 13 30 10
+##   Treat    8 19 21</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Getting the Allele Frequencies</h3></hgroup><article  id="writing-our-function-getting-the-allele-frequencies">
+
+<pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop){
+ genoTable &lt;- table(pop, snp) 
+ alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ return(alleleTable)
+}
+fisherFun(snps$SNP1, snps$Population)</pre>
+
+<pre >##          A  B
+## Control 56 50
+## Treat   35 61</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Adding the Fisher Test</h3></hgroup><article  id="writing-our-function-adding-the-fisher-test">
+
+<pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop){
+ genoTable &lt;- table(pop, snp) 
+ alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ fTest &lt;- fisher.test(alleleTable)
+ return(fTest)
+}
+fisherFun(snps$SNP1, snps$Population)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Adding the Fisher Test</h3></hgroup><article  id="writing-our-function-adding-the-fisher-test-1">
+
+<p>Is there any optional information we might like to pass to the Fisher Test?</p>
+
+<pre class = 'prettyprint lang-r'>?fisher.test</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Adding the ellipsis</h3></hgroup><article  id="writing-our-function-adding-the-ellipsis">
+
+<pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop, ...){
+ genoTable &lt;- table(pop, snp) 
+ alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ fTest &lt;- fisher.test(alleleTable, ...)
+ return(fTest)
+}</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Adding the ellipsis</h3></hgroup><article  id="writing-our-function-adding-the-ellipsis-1">
+
+<p><strong>Compare the following</strong></p>
+
+<pre class = 'prettyprint lang-r'>fisherFun(snps$SNP1, snps$Population)
+fisherFun(snps$SNP1, snps$Population, conf.level = 0.99)</pre>
+
+<p><strong>Was there a difference?</strong></p>
+
+<p><strong>Should we leave the ellipsis here?</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Defining The Output</h3></hgroup><article  id="writing-our-function-defining-the-output">
+
+<p><strong>What information should we keep?</strong></p>
+
+<p>Do we want:</p>
+
+<ul>
+<li>The frequency of <code>A</code> or <code>B</code> in each population?</li>
+<li>Any Odds Ratio?</li>
+<li>The \(p\)-value?</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Defining The Output</h3></hgroup><article  id="writing-our-function-defining-the-output-1">
+
+<p><strong>What information should we keep?</strong></p>
+
+<ul>
+<li>The frequency of <code>A</code> or <code>B</code> in each population?</li>
+<li>Any Odds Ratio?</li>
+<li>The \(p\)-value?</li>
+</ul>
+
+<p><strong>Let&#39;s go with just <code>A</code> in each population and the \(p\)-value</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Defining The Output</h3></hgroup><article  id="writing-our-function-defining-the-output-2">
+
+<pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop, ...){
+ genoTable &lt;- table(pop, snp) 
+ alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ freqs &lt;- alleleTable[,&quot;A&quot;] / rowSums(alleleTable) 
+ fTest &lt;- fisher.test(alleleTable, ...)
+ return(freqs)
+}</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Defining The Output</h3></hgroup><article  id="writing-our-function-defining-the-output-3">
+
+<pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop, ...){
+ genoTable &lt;- table(pop, snp) 
+ alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ freqs &lt;- alleleTable[,&quot;A&quot;] / rowSums(alleleTable) 
+ fTest &lt;- fisher.test(alleleTable, ...)
+ out &lt;- as.list(freqs) %&gt;% as.data.frame()
+ out$p.value &lt;- fTest$p.value
+ return(out)
+}</pre>
+
+</article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Defining The Output</h3></hgroup><article  id="writing-our-function-defining-the-output-4">
+
+<pre class = 'prettyprint lang-r'>fisherFun(snps$SNP1, snps$Population)</pre>
+
+<pre >##     Control     Treat    p.value
+## 1 0.5283019 0.3645833 0.02359114</pre>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Using Functions Repetitively</h2></hgroup><article  id="using-functions-repetitively">
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 

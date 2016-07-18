@@ -75,6 +75,7 @@ In `Day_2/data` is a file `snps.csv`
 ```r
 library(readr)
 library(dplyr)
+library(reshape2)
 snps <- read_csv("data/snps.csv")
 dim(snps)
 ```
@@ -110,13 +111,221 @@ snps %>%
 
 ## Our Task
 
-Write a function that performs a Fisher's Exact Test on each allele
+Write a function that performs a Fisher's Exact Test on each allele, comparing the allele structure across populations
 
 For each SNP, we need to:
 
-1. Form a 3 $\times$ 2 table
+1. Form a 2 $\times$ 2 table
 2. Perform the test
 3. Format our output into a `data_frame` (or `tibble`)
+
+## Starting Our Function
+
+The best place to start is just working with a single SNP
+
+__What information do we need?__
+
+1. The Population Structure
+2. The Genotypes
+
+
+```r
+fisherFun<- function(snp, pop){
+  
+}
+```
+
+## Writing Our Function | Forming The Table
+
+Forming a table of alleles:
+
+- Could use `group_by()` then `summarise()` `acast()`
+
+
+```r
+snps[1:2] %>% 
+  group_by(Population, SNP1) %>% 
+  summarise(count = n()) %>%
+  filter(!is.na(SNP1)) %>%
+  acast(Population~SNP1, value.var = "count")
+```
+
+```
+##         AA AB BB
+## Control 13 30 10
+## Treat    8 19 21
+```
+
+## Writing Our Function | Forming The Table
+
+Forming a table of genotypes:
+
+- An easier way is to use `table()`
+
+
+```r
+table(snps$Population, snps$SNP1)
+```
+
+```
+##          
+##           AA AB BB
+##   Control 13 30 10
+##   Treat    8 19 21
+```
+
+## Writing Our Function | Forming The Table
+
+
+```r
+fisherFun<- function(snp, pop){
+ genoTable <- table(pop, snp) 
+ return(genoTable)
+}
+fisherFun(snps$SNP1, snps$Population)
+```
+
+```
+##          snp
+## pop       AA AB BB
+##   Control 13 30 10
+##   Treat    8 19 21
+```
+
+## Writing Our Function | Getting the Allele Frequencies
+
+
+```r
+fisherFun<- function(snp, pop){
+ genoTable <- table(pop, snp) 
+ alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ return(alleleTable)
+}
+fisherFun(snps$SNP1, snps$Population)
+```
+
+```
+##          A  B
+## Control 56 50
+## Treat   35 61
+```
+
+## Writing Our Function | Adding the Fisher Test
+
+
+```r
+fisherFun<- function(snp, pop){
+ genoTable <- table(pop, snp) 
+ alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ fTest <- fisher.test(alleleTable)
+ return(fTest)
+}
+fisherFun(snps$SNP1, snps$Population)
+```
+
+
+## Writing Our Function | Adding the Fisher Test
+
+Is there any optional information we might like to pass to the Fisher Test?
+
+
+```r
+?fisher.test
+```
+
+## Writing Our Function | Adding the ellipsis
+
+
+```r
+fisherFun<- function(snp, pop, ...){
+ genoTable <- table(pop, snp) 
+ alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ fTest <- fisher.test(alleleTable, ...)
+ return(fTest)
+}
+```
+
+## Writing Our Function | Adding the ellipsis
+
+__Compare the following__
+
+
+```r
+fisherFun(snps$SNP1, snps$Population)
+fisherFun(snps$SNP1, snps$Population, conf.level = 0.99)
+```
+
+__Was there a difference?__
+
+__Should we leave the ellipsis here?__
+
+## Writing Our Function | Defining The Output
+
+__What information should we keep?__
+
+Do we want:
+
+- The frequency of `A` or `B` in each population?
+- Any Odds Ratio?
+- The $p$-value?
+
+## Writing Our Function | Defining The Output
+
+__What information should we keep?__
+
+- The frequency of `A` or `B` in each population?
+- Any Odds Ratio?
+- The $p$-value?
+
+__Let's go with just `A` in each population and the $p$-value__
+
+## Writing Our Function | Defining The Output
+
+
+```r
+fisherFun<- function(snp, pop, ...){
+ genoTable <- table(pop, snp) 
+ alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ freqs <- alleleTable[,"A"] / rowSums(alleleTable) 
+ fTest <- fisher.test(alleleTable, ...)
+ return(freqs)
+}
+```
+
+## Writing Our Function | Defining The Output
+
+
+```r
+fisherFun<- function(snp, pop, ...){
+ genoTable <- table(pop, snp) 
+ alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ freqs <- alleleTable[,"A"] / rowSums(alleleTable) 
+ fTest <- fisher.test(alleleTable, ...)
+ out <- as.list(freqs) %>% as.data.frame()
+ out$p.value <- fTest$p.value
+ return(out)
+}
+```
+
+## Writing Our Function | Defining The Output
+
+
+```r
+fisherFun(snps$SNP1, snps$Population)
+```
+
+```
+##     Control     Treat    p.value
+## 1 0.5283019 0.3645833 0.02359114
+```
+
+# Using Functions Repetitively
+
 
 ---
 
