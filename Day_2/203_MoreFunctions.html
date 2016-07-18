@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Getting More Out Of Functions</title>
+  <title>Functions: Part 2</title>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,7 +26,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Getting More Out Of Functions',
+                title: 'Functions: Part 2',
                         subtitle: 'RAdelaide 2016',
                 useBuilds: true,
         usePrettify: true,
@@ -204,9 +204,9 @@ dim(snps)</pre>
 <p>For each SNP, we need to:</p>
 
 <ol>
-<li>Form a 2 \(\times\) 2 table</li>
+<li>Form a 2 \(\times\) 2 table (for <code>A</code> and <code>B</code>)</li>
 <li>Perform the test</li>
-<li>Format our output into a <code>data_frame</code> (or <code>tibble</code>)</li>
+<li>Format our output</li>
 </ol>
 
 </article></slide><slide class=''><hgroup><h2>Starting Our Function</h2></hgroup><article  id="starting-our-function">
@@ -225,8 +225,6 @@ dim(snps)</pre>
 }</pre>
 
 </article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Forming The Table</h3></hgroup><article  id="writing-our-function-forming-the-table">
-
-<p>Forming a table of alleles:</p>
 
 <ul>
 <li>Could use <code>group_by()</code> then <code>summarise()</code> <code>acast()</code></li>
@@ -274,8 +272,8 @@ fisherFun(snps$SNP1, snps$Population)</pre>
 
 <pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop){
  genoTable &lt;- table(pop, snp) 
- alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
-                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ alleleTable &lt;- data.frame(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                           B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
  return(alleleTable)
 }
 fisherFun(snps$SNP1, snps$Population)</pre>
@@ -288,8 +286,8 @@ fisherFun(snps$SNP1, snps$Population)</pre>
 
 <pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop){
  genoTable &lt;- table(pop, snp) 
- alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
-                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ alleleTable &lt;- data.frame(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                           B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
  fTest &lt;- fisher.test(alleleTable)
  return(fTest)
 }
@@ -305,8 +303,8 @@ fisherFun(snps$SNP1, snps$Population)</pre>
 
 <pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop, ...){
  genoTable &lt;- table(pop, snp) 
- alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
-                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ alleleTable &lt;- data.frame(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                           B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
  fTest &lt;- fisher.test(alleleTable, ...)
  return(fTest)
 }</pre>
@@ -350,8 +348,8 @@ fisherFun(snps$SNP1, snps$Population, conf.level = 0.99)</pre>
 
 <pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop, ...){
  genoTable &lt;- table(pop, snp) 
- alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
-                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ alleleTable &lt;- data.frame(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                           B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
  freqs &lt;- alleleTable[,&quot;A&quot;] / rowSums(alleleTable) 
  fTest &lt;- fisher.test(alleleTable, ...)
  return(freqs)
@@ -361,13 +359,13 @@ fisherFun(snps$SNP1, snps$Population, conf.level = 0.99)</pre>
 
 <pre class = 'prettyprint lang-r'>fisherFun&lt;- function(snp, pop, ...){
  genoTable &lt;- table(pop, snp) 
- alleleTable &lt;- cbind(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
-                      B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
+ alleleTable &lt;- data.frame(A = 2*genoTable[,&quot;AA&quot;] + genoTable[,&quot;AB&quot;],
+                           B = 2*genoTable[,&quot;BB&quot;] + genoTable[,&quot;AB&quot;])
  freqs &lt;- alleleTable[,&quot;A&quot;] / rowSums(alleleTable) 
  fTest &lt;- fisher.test(alleleTable, ...)
- out &lt;- as.list(freqs) %&gt;% as.data.frame()
+ out &lt;- as.list(freqs)
  out$p.value &lt;- fTest$p.value
- return(out)
+ as.data.frame(out)
 }</pre>
 
 </article></slide><slide class=''><hgroup><h2>Writing Our Function </h2><h3> Defining The Output</h3></hgroup><article  id="writing-our-function-defining-the-output-4">
@@ -570,13 +568,12 @@ sapply(snps[2:3], fisherFun, pop = snps$Population)</pre>
 )</pre>
 
 <ul>
-<li>Running in series took 2.534 sec</li>
-<li>Running in parallel took 1.446 sec</li>
+<li>Running in series took 2.942 sec<br/>Running in parallel took 1.676 sec</li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>Running in Parallel</h2></hgroup><article  id="running-in-parallel-5">
 
-<p>With 3 cores: a speed up of 1.75-fold</p>
+<p>With 3 cores: a speed up of 1.76-fold</p>
 
 <p>Now imagine a set of 25,000 SNPs with pair-wise comparisons required for linkage</p>
 

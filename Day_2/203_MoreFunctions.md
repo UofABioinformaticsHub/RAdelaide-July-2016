@@ -1,4 +1,4 @@
-# Getting More Out Of Functions
+# Functions: Part 2
 Steve Pederson  
 21 July 2016  
 
@@ -115,9 +115,9 @@ Write a function that performs a Fisher's Exact Test on each allele, comparing t
 
 For each SNP, we need to:
 
-1. Form a 2 $\times$ 2 table
+1. Form a 2 $\times$ 2 table (for `A` and `B`)
 2. Perform the test
-3. Format our output into a `data_frame` (or `tibble`)
+3. Format our output 
 
 ## Starting Our Function
 
@@ -136,8 +136,6 @@ fisherFun<- function(snp, pop){
 ```
 
 ## Writing Our Function | Forming The Table
-
-Forming a table of alleles:
 
 - Could use `group_by()` then `summarise()` `acast()`
 
@@ -198,8 +196,8 @@ fisherFun(snps$SNP1, snps$Population)
 ```r
 fisherFun<- function(snp, pop){
  genoTable <- table(pop, snp) 
- alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
-                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ alleleTable <- data.frame(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                           B = 2*genoTable[,"BB"] + genoTable[,"AB"])
  return(alleleTable)
 }
 fisherFun(snps$SNP1, snps$Population)
@@ -217,8 +215,8 @@ fisherFun(snps$SNP1, snps$Population)
 ```r
 fisherFun<- function(snp, pop){
  genoTable <- table(pop, snp) 
- alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
-                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ alleleTable <- data.frame(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                           B = 2*genoTable[,"BB"] + genoTable[,"AB"])
  fTest <- fisher.test(alleleTable)
  return(fTest)
 }
@@ -241,8 +239,8 @@ Is there any optional information we might like to pass to the Fisher Test?
 ```r
 fisherFun<- function(snp, pop, ...){
  genoTable <- table(pop, snp) 
- alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
-                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ alleleTable <- data.frame(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                           B = 2*genoTable[,"BB"] + genoTable[,"AB"])
  fTest <- fisher.test(alleleTable, ...)
  return(fTest)
 }
@@ -288,8 +286,8 @@ __Let's go with just `A` in each population and the $p$-value__
 ```r
 fisherFun<- function(snp, pop, ...){
  genoTable <- table(pop, snp) 
- alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
-                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ alleleTable <- data.frame(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                           B = 2*genoTable[,"BB"] + genoTable[,"AB"])
  freqs <- alleleTable[,"A"] / rowSums(alleleTable) 
  fTest <- fisher.test(alleleTable, ...)
  return(freqs)
@@ -302,13 +300,13 @@ fisherFun<- function(snp, pop, ...){
 ```r
 fisherFun<- function(snp, pop, ...){
  genoTable <- table(pop, snp) 
- alleleTable <- cbind(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
-                      B = 2*genoTable[,"BB"] + genoTable[,"AB"])
+ alleleTable <- data.frame(A = 2*genoTable[,"AA"] + genoTable[,"AB"],
+                           B = 2*genoTable[,"BB"] + genoTable[,"AB"])
  freqs <- alleleTable[,"A"] / rowSums(alleleTable) 
  fTest <- fisher.test(alleleTable, ...)
- out <- as.list(freqs) %>% as.data.frame()
+ out <- as.list(freqs)
  out$p.value <- fTest$p.value
- return(out)
+ as.data.frame(out)
 }
 ```
 
@@ -556,12 +554,12 @@ times <- list(
 )
 ```
 
-- Running in series took 2.534 sec
-- Running in parallel took 1.446 sec
+- Running in series took 2.942 sec  
+Running in parallel took 1.676 sec
 
 ## Running in Parallel
 
-With 3 cores: a speed up of 1.75-fold
+With 3 cores: a speed up of 1.76-fold
 
 Now imagine a set of 25,000 SNPs with pair-wise comparisons required for linkage
 
