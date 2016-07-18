@@ -23,21 +23,42 @@ R Studio will usually automatically detect your most recent version of R and wil
 ## R Packages
 To install all required packages, please execute the following command in R.
 You can copy & paste straight from this page into R.
-If you have problems with the installation, see below.
+
 ```{r, eval=FALSE}
 source("http://uofabioinformaticshub.github.io/RAdelaide-July-2016/rAdelaideInstaller.R")
 ```
 
-## Browser
+If you have problems with  installation related to the package `dplyr`, see the notes at the bottom of the page.
+Otherwise, please come to the Bioinformatics Hub, Level 4, Santos Petroleum Engineering Building between 4pm and 6pm on Tuesday 19th July.
+
+## Connecting to Nectar
+
+In order to take part in the "R-Studio in the Cloud" session, attendees will need an active NeCTAR project. Here is a [link to the user guide](https://support.nectar.org.au/support/solutions/articles/6000055377-getting-an-account) for accessing the NeCTAR dashboard using your AAF (institutional) login.
+
+- Go the [NeCTAR dashboard page](https://dashboard.rc.nectar.org.au) and confirm that you can log in using your AAF credentials. 
+When you do this for the first time, you will activate a new trial project allocation.
+If you do not have an AAF login, please advise Steve during one of the breaks before the Thursday afternoon session
+
+- If you have previously logged onto the dashboard confirm that your trial project is still active, and if not request an extension for this course. 
+To request an extension, go to the Allocations tab of the dashboard and fill in a New Allocation request.
+Explain that you will be doing this course and give the date on which you will be doing the course.
+
+- If your laptop is running Windows, you will need an SSH client. 
+Go to the [PuTTY download page](http://www.chiark.greenend.org.uk/~sgtatham/putty/download)
+Download and run  `putty-0.67-installer.msi`.
+If you don't have administrative access to your computer, just download `putty.exe` and this will be sufficient.
+
+
+## Seting Up Your Internet Browser
 
 Although not required, installing a plugin/addon for your browser which can view Markdown may be beneficial.
 Suitable viewers are [Markdown Viewer For Chrome](https://chrome.google.com/webstore/detail/markdown-viewer/ehnambpmkdhopilaccgfmojilolcglhn)
 or [Markdown Viewer For Firefox](https://addons.mozilla.org/en-US/firefox/addon/markdown-viewer/)
 
 
-## Problems with installation
+## Problems with installation of R packages
 
-If you receive an error message when running the above code, Steve will be available in the Bioinformatics Hub (Level 4, Santos Petroleum Engineering Building) from 4pm on Tuesday 19th July.
+If you receive an error message when running the above code, Steve will be available in the Bioinformatics Hub (Level 4, Santos Petroleum Engineering Building) from 4pm to 6pm on Tuesday 19th July.
 If your error message was specifically regarding the package `dplyr`please keep reading.
 
 ### The package `dplyr`
