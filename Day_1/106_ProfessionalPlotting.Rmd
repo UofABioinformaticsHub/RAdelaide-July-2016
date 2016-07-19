@@ -1,5 +1,5 @@
 ---
-title: "Plotting For Publication"
+title: "106: Plots For Publication"
 subtitle: "RAdelaide 2016"
 author: "Steve Pederson"
 date: "20 July 2016"

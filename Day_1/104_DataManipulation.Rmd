@@ -1,5 +1,5 @@
 ---
-title: "Data Manipulation"
+title: "104: Data Manipulation"
 subtitle: "RAdelaide 2016"
 author: "Steve Pederson"
 date: "20 July 2016"

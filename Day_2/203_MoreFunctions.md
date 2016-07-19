@@ -1,4 +1,4 @@
-# Functions: Part 2
+# 203: Functions: Part 2
 Steve Pederson  
 21 July 2016  
 
@@ -554,12 +554,12 @@ times <- list(
 )
 ```
 
-- Running in series took 2.942 sec  
-Running in parallel took 1.676 sec
+- Running in series took 3.054 sec  
+Running in parallel took 1.753 sec
 
 ## Running in Parallel
 
-With 3 cores: a speed up of 1.76-fold
+With 3 cores: a speed up of 1.74-fold
 
 Now imagine a set of 25,000 SNPs with pair-wise comparisons required for linkage
 

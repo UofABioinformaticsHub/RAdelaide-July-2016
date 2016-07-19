@@ -1,4 +1,4 @@
-# Introduction To R
+# 101: Introduction To R
 Steve Pederson  
 20 July 2016  
 

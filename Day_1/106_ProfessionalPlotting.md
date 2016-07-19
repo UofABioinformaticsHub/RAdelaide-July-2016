@@ -1,4 +1,4 @@
-# Plotting For Publication
+# 106: Plots For Publication
 Steve Pederson  
 20 July 2016  
 

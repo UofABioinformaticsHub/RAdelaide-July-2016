@@ -1,4 +1,4 @@
-# R Objects & Data Types
+# 201: R Object Types
 Steve Pederson  
 21 July 2016  
 

@@ -1,5 +1,5 @@
 ---
-title: "Data Visualisation"
+title: "105: Data Visualisation"
 subtitle: "RAdelaide 2016"
 author: "Steve Pederson"
 date: "20 July 2016"

@@ -1,5 +1,5 @@
 ---
-title: "R Objects & Data Types"
+title: "201: R Object Types"
 subtitle: "RAdelaide 2016"
 author: "Steve Pederson"
 date: "21 July 2016"
