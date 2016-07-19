@@ -21,6 +21,37 @@ knitr::opts_chunk$set(echo = FALSE, include = FALSE,
 library(knitr)
 ```
 
+## Who Am I? | Steve Pederson
+
+R User for >10 years
+
+Co-ordinator, Bioinformatics Hub  
+Level 4, Santos Petroleum Engineering Building
+
+## Who Am I? | The Bioinformatics Hub
+
+Also Today:
+
+- Jimmy Breen & Hien To (Bioinformatics Hub)
+- Reuben Buckley (Centre For Computational Genetics)
+- Mohammad Kamruzzaman (Centre for Water Management and Reuse)
+
+## Who Am I? | The Bioinformatics Hub
+
+Later This Week:
+
+- Joey Gerlach (eRSA)
+- Steve Delean (Biological Sciences)
+
+## Other Information
+
+### Slack
+Please join the `#radelaide-2016` channel
+
+### R Drop In
+- Previously Wed 12:30 - 2:30
+- Now Tues 11am - 1:00pm
+
 
 ## Why use R?
 
