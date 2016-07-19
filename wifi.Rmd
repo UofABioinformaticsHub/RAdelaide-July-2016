@@ -1,0 +1,21 @@
+---
+title: "Wi-Fi Access"
+author: "Steve Pederson"
+date: "20 July 2016"
+output: html_document
+---
+
+# University of Adelaide
+
+Use your normal login
+
+# External Institutions
+
+Please use `eduroam` e.g. - `userid@institution`
+
+# Others
+
+Select `UofA` WiFi Network:
+
+- user: bioinfhub
+- pass: u$hs7oaigs
