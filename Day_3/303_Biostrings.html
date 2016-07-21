@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>302: Annotations</title>
+  <title>303: Sequence Data</title>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,7 +26,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: '302: Annotations',
+                title: '303: Sequence Data',
                         subtitle: 'RAdelaide 2016',
                 useBuilds: true,
         usePrettify: true,
@@ -112,154 +112,9 @@
           </hgroup>
   </slide>
 
-<slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Getting Annotation Information</h2></hgroup><article  id="getting-annotation-information">
-
-</article></slide><slide class=''><hgroup><h2>Annotation</h2></hgroup><article  id="annotation">
-
-<ul>
-<li>Make up a significant proportion of Bioconductor Packages</li>
-<li>Often seen as the end point of analysis</li>
-<li>For networks/pathways it&#39;s the starting point</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code></h2></hgroup><article  id="biomart">
-
-<p>The package <code>biomaRt</code> is based on the web interface at <a href='http://www.ensembl.org/biomart/martview' title=''>http://www.ensembl.org/biomart/martview</a></p>
-
-<pre class = 'prettyprint lang-r'>library(biomaRt)
-allMarts &lt;- listMarts()</pre>
-
-<p>These are the possible data sources (i.e. marts) we can access</p>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code></h2></hgroup><article  id="biomart-1">
-
-<p>Each <code>mart</code> has multiple <code>datasets</code></p>
-
-<pre class = 'prettyprint lang-r'>mart &lt;- useMart(&quot;ENSEMBL_MART_ENSEMBL&quot;)
-ensDatasets &lt;- listDatasets(mart)
-library(dplyr)
-filter(ensDatasets, grepl(&quot;sapiens&quot;, dataset))</pre>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code></h2></hgroup><article  id="biomart-2">
-
-<p>We can just go straight there by selecting the <code>dataset</code> within <code>useMart()</code></p>
-
-<pre class = 'prettyprint lang-r'>mart &lt;- useMart(biomart = &quot;ENSEMBL_MART_ENSEMBL&quot;, 
-                dataset = &quot;hsapiens_gene_ensembl&quot;)</pre>
-
-<p>NB: This is exactly the same procedure as the windows on the web GUI</p>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code></h2></hgroup><article  id="biomart-3">
-
-<p>Now the <code>mart</code> &amp; <code>dataset</code> have been selected</p>
-
-<ul>
-<li>The main query function is <code>getBM()</code></li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>?getBM</pre>
-
-<p>This will give the requested data directly into a <code>data.frame</code></p>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code> </h2><h3> Attributes and Filters</h3></hgroup><article  id="biomart-attributes-and-filters">
-
-<p>The two main pieces of data</p>
-
-<ul>
-<li><code>attributes</code> are the values we are looking for</li>
-<li><code>filter</code> along with <code>values</code> are our search queries</li>
-</ul>
-
-<p>To find what attributes can be downloaded from our <code>mart</code></p>
-
-<pre class = 'prettyprint lang-r'>martAttributes &lt;- listAttributes(mart)</pre>
-
-<p>These are possible pieces of information we can return (<code>dim(martAttributes)</code>)</p>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code></h2></hgroup><article  id="biomart-4">
-
-<ul>
-<li>Some attributes may contain large amounts of data</li>
-<li>We can use filters to restrict the information</li>
-<li>e.g. we may have only a few genes of interest</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>martFilters &lt;- listFilters(mart)</pre>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code> </h2><h3> Example 1</h3></hgroup><article  id="biomart-example-1">
-
-<ul>
-<li>Let&#39;s get all the gene names on Chromosome 1</li>
-<li>NB: We need to specify the filter, and give the filter values separately</li>
-<li>We need to specify the mart argument every time</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>genes &lt;- getBM(attributes=c(&quot;hgnc_symbol&quot;, &quot;entrezgene&quot;), 
-               filters = &quot;chromosome_name&quot;, 
-               values = &quot;1&quot;, mart = mart)
-head(genes)</pre>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code> </h2><h3> Example 2</h3></hgroup><article  id="biomart-example-2">
-
-<pre class = 'prettyprint lang-r'>ids &lt;- c(&quot;ENSG00000134460&quot;, &quot;ENSG00000163599&quot;)
-attr &lt;-  c(&quot;ensembl_gene_id&quot;, &quot;ensembl_transcript_id&quot;)
-test &lt;- getBM(attributes = attr,
-              filters = &quot;ensembl_gene_id&quot;,
-              values = ids,
-              mart = mart)</pre>
-
-<p>Repeat the above <strong>without asking for the gene_id back</strong></p>
-
-<p>How could we also get the <code>chromosome</code>, <code>strand</code>, <code>start</code> &amp; <code>end</code> positions in the above query</p>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code></h2></hgroup><article  id="biomart-5">
-
-<p>We could condense each set of transcripts into a <code>CharacterList</code> and make a <code>DataFrame</code>&#8230;</p>
-
-<p>We can set multiple filters:</p>
-
-<ul>
-<li>The values must be supplied as a list (read the help page)</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code> and <code>dplyr</code></h2></hgroup><article  id="biomart-and-dplyr">
-
-<p>Here&#39;s a problem</p>
-
-<pre class = 'prettyprint lang-r'>?select</pre>
-
-<p>We now have more than one function called <code>select</code></p>
-
-<p><strong>How will <code>R</code> know which one to use&quot;</strong></p>
-
-<p>A <code>mart</code> is an <code>S4</code> object, a <code>data.frame</code> is an <code>S3</code> object</p>
-
-</article></slide><slide class=''><hgroup><h2><code>biomaRt</code> and <code>dplyr</code></h2></hgroup><article  id="biomart-and-dplyr-1">
-
-<p>This is a well known problem</p>
-
-<p>The specific version of a function can be called by using the package name</p>
-
-<ul>
-<li>Known as the <code>namespace</code></li>
-<li><code>dplyr::select()</code> or <code>biomaRt::select()</code></li>
-</ul>
-
-</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub">
+<slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>BSgenome Objects</h2></hgroup><article  id="bsgenome-objects">
 
 </article></slide><slide class=''><hgroup><h2>AnnotationData</h2></hgroup><article  id="annotationdata">
-
-<p>This session relies heavily on material from</p>
-
-<p><strong>Annotation Resources</strong></p>
-
-<p>Authors: Marc RJ Carlson, Herve Pages, Sonali Arora, Valerie Obenchain, and Martin Morgan</p>
-
-<p>Presented at BioC2015 July 20-22, Seattle, WA</p>
-
-<p><a href='https://github.com/mrjc42/BiocAnnotRes2015' title=''>https://github.com/mrjc42/BiocAnnotRes2015</a></p>
-
-</article></slide><slide class=''><hgroup><h2>AnnotationData</h2></hgroup><article  id="annotationdata-1">
 
 <p>Four common classes of annotation</p>
 
@@ -273,8 +128,8 @@ test &lt;- getBM(attributes = attr,
 <td align="left">gene based information</td>
 </tr>
 <tr class="even">
-<td align="left">BSgenome</td>
-<td align="left">genome sequence</td>
+<td align="left"><strong>BSgenome</strong></td>
+<td align="left"><strong>genome sequence</strong></td>
 </tr>
 <tr class="odd">
 <td align="left">TxDb</td>
@@ -286,108 +141,187 @@ test &lt;- getBM(attributes = attr,
 </tr>
 </table>
 
-</article></slide><slide class=''><hgroup><h2>AnnotationHub</h2></hgroup><article  id="annotationhub">
+</article></slide><slide class=''><hgroup><h2><code>BSgenome</code> Objects</h2></hgroup><article  id="bsgenome-objects-1">
 
-<pre class = 'prettyprint lang-r'>library(AnnotationHub)
-ah &lt;- AnnotationHub()</pre>
+<pre class = 'prettyprint lang-r'>library(&quot;BSgenome&quot;)
+available.genomes()[1:4]</pre>
 
 <ul>
-<li>This is a relatively new &amp; sensibly named package</li>
-<li>We can access &amp; find numerous annotation types</li>
-<li>Uses <code>SQL</code>-type methods</li>
-<li>Creating this object will create a cache with the latest metadata from each data source</li>
+<li>These objects hold genome sequence information</li>
+<li>Currently 84 genomes available</li>
+<li>Mainly UCSC &amp; NCBI derived</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-1">
-
-<p>Get a summary:</p>
-
-<pre class = 'prettyprint lang-r'>ah</pre>
-
-<p>This is another <code>S4</code> object</p>
+</article></slide><slide class=''><hgroup><h2><code>BSgenome</code> Objects</h2></hgroup><article  id="bsgenome-objects-2">
 
 <ul>
-<li>3 important components: <code>$dataprovider</code>, <code>$species</code> &amp; <code>$rdataclass</code></li>
-<li>additional components listed under <code>additional mcols()</code> can also be accessed with the <code>$</code></li>
+<li>Mainly human &amp; model organisms</li>
+<li>Built around the <code>Biostrings</code> package (&quot;BS&quot;)</li>
+<li>Special methods &amp; classes for long sequences</li>
+<li>Loaded by default when we called <code>library(&quot;BSgenome&quot;)</code></li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-2">
+</article></slide><slide class=''><hgroup><h2><code>Biostrings</code></h2></hgroup><article  id="biostrings">
 
-<p>We can find the data providers</p>
+<p>Four important object classes:</p>
 
-<pre class = 'prettyprint lang-r'>unique(ah$dataprovider) </pre>
+<ol>
+<li><code>BString</code> - Can hold any character strings</li>
+<li><code>DNAString</code> - Restricted to DNA characters</li>
+<li><code>RNAString</code> - Restricted to RNA characters</li>
+<li><code>AAString</code> - Restricted to Amino Acid alphabet</li>
+</ol>
 
-<p>Or the different data classes in the hub</p>
+</article></slide><slide class=''><hgroup><h2><code>BString</code> objects</h2></hgroup><article  id="bstring-objects">
 
-<pre class = 'prettyprint lang-r'>unique(ah$rdataclass) </pre>
+<pre class = 'prettyprint lang-r'>b &lt;- BString(&quot;I am a BString object&quot;)
+b
+length(b)
+as.character(b)</pre>
 
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-3">
+</article></slide><slide class=''><hgroup><h2><code>BString</code> objects</h2></hgroup><article  id="bstring-objects-1">
 
-<p>We can find the species with annotations</p>
+<h3>Try these commands:</h3>
 
-<pre class = 'prettyprint lang-r'>sp &lt;- unique(ah$species)
-head(sp)
-length(sp)</pre>
+<pre class = 'prettyprint lang-r'>subseq(b, start = 5)
+subseq(b, start = -5, width=3)
+reverse(b)
+Views(b, start=c(1:5), end = 9)</pre>
 
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-4">
-
-<p>We can <code>query</code> for matches to any term, e.g. to look for rabbit (<em>Oryctolagus cuniculus</em>) annotation sources</p>
-
-<pre class = 'prettyprint lang-r'>query(ah, &quot;Oryctolagus&quot;)</pre>
-
-<p>We can create smaller <code>AnnotationHub</code> objects, which we could then search again</p>
-
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-5">
-
-<p>We can subset easily</p>
-
-<pre class = 'prettyprint lang-r'>subset(ah, rdataclass==&quot;GRanges&quot;)</pre>
-
-<p>Or if we know we want the <code>GRanges</code> annotations for the rabbit</p>
-
-<pre class = 'prettyprint lang-r'>subset(query(ah, &quot;Oryctolagus&quot;), rdataclass==&quot;GRanges&quot;)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-6">
-
-<p>Or we can combine multiple search queries</p>
-
-<p>Fetch the rabbit annotations, which are <code>GRanges</code> objects derived from <code>Ensembl</code></p>
-
-<pre class = 'prettyprint lang-r'>query(ah, 
-      pattern=c(&quot;Oryctolagus&quot;, &quot;GRanges&quot;, &quot;Ensembl&quot;))</pre>
-
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-7">
-
-<p>We can find the metadata for the whole object, or any subset we&#39;ve created</p>
-
-<pre class = 'prettyprint lang-r'>meta &lt;- mcols(ah)
-meta</pre>
-
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-8">
-
-<p>There&#39;s even a GUI</p>
-
-<pre class = 'prettyprint lang-r'>display(ah)</pre>
+</article></slide><slide class=''><hgroup><h2><code>DNAString</code> objects</h2></hgroup><article  id="dnastring-objects">
 
 <ul>
-<li>You may need to resize the <strong>Viewer</strong> window</li>
-<li>Return an <code>AnnotationHub()</code> to R by selecting a row &amp; clicking the button</li>
+<li>Restricted to DNA characters</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-9">
+<pre class = 'prettyprint lang-r'>DNA_ALPHABET</pre>
 
-<p>Once we have the specific annotation we&#39;re interested in: - subset using the name &amp; the double bracket method - this loads the <code>AnnotationData</code> object into your workspace</p>
+<pre class = 'prettyprint lang-r'>DNA_BASES
+IUPAC_CODE_MAP[DNA_ALPHABET[1:15]]</pre>
 
-<pre class = 'prettyprint lang-r'>gr &lt;- ah[[&quot;AH51056&quot;]]
-gr</pre>
+</article></slide><slide class=''><hgroup><h2><code>DNAString</code> objects</h2></hgroup><article  id="dnastring-objects-1">
 
-</article></slide><slide class=''><hgroup><h2>orgDB Objects</h2></hgroup><article  id="orgdb-objects">
+<pre class = 'prettyprint lang-r'>d &lt;- DNAString(&quot;TTGAAAA-CTC-N&quot;)
+d
+length(d)
+d[3:6]</pre>
 
-<p>Organsim DB objects</p>
+</article></slide><slide class=''><hgroup><h2><code>DNAString</code> objects</h2></hgroup><article  id="dnastring-objects-2">
 
-<ul>
-<li>Follow more of an SQL type search pattern</li>
-</ul></article></slide>
+<h3>Try these commands:</h3>
+
+<pre class = 'prettyprint lang-r'>reverseComplement(d)
+reverse(d)
+alphabetFrequency(d)
+alphabetFrequency(d, baseOnly=TRUE)
+Views(d, start = 3:0, end = 5)
+Views(d, start = 1:5, width=6)
+subseq(d, start = -4, width = 3)</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>RNAString</code> objects</h2></hgroup><article  id="rnastring-objects">
+
+<p>Very similar to <code>DNAString</code> objects, but with a different alphabet</p>
+
+<pre class = 'prettyprint lang-r'>RNA_ALPHABET</pre>
+
+<pre class = 'prettyprint lang-r'>RNA_BASES</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>RNAString</code> objects</h2></hgroup><article  id="rnastring-objects-1">
+
+<h3>Try these commands</h3>
+
+<pre class = 'prettyprint lang-r'>RNA_GENETIC_CODE
+r &lt;- RNAString(d)
+r
+r == d
+alphabetFrequency(r, baseOnly = TRUE)
+letterFrequency(r, c(&quot;A&quot;, &quot;U&quot;))</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>AAString</code> objects</h2></hgroup><article  id="aastring-objects">
+
+<p>Restricted to the Amino Acid alphabet</p>
+
+<p>Functions specific to <code>DNAString</code>/<code>RNAString</code> objects won&#39;t work</p>
+
+<h3>Try these commands</h3>
+
+<pre class = 'prettyprint lang-r'>AA_ALPHABET      
+AA_STANDARD       
+AA_PROTEINOGENIC
+a &lt;- AAString(&quot;MARKSLEMSIR*&quot;)
+seqtype(a)
+seqtype(d)</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>XStringSet</code> Objects</h2></hgroup><article  id="xstringset-objects">
+
+<p>All of the above strings can be extended to: - <code>BStringSet</code>, <code>DNAStringSet</code>, <code>RNAStringSet</code>, <code>AAStringSet</code></p>
+
+<pre class = 'prettyprint lang-r'>x &lt;- c(&quot;CTC-NACCAGTAT&quot;, &quot;TTGA&quot;, &quot;TACCTAGAG&quot;)
+width(x)
+dss &lt;- DNAStringSet(x)</pre>
+
+<p>The function <code>width()</code> is imported from the dependency <code>BiocGenerics</code></p>
+
+</article></slide><slide class=''><hgroup><h2><code>DNAStringSet</code> Objects</h2></hgroup><article  id="dnastringset-objects">
+
+<h3>Try these commands</h3>
+
+<pre class = 'prettyprint lang-r'>nchar(dss)
+width(dss)
+names(dss)
+names(dss) &lt;- paste0(&quot;String&quot;, 1:3)
+dss
+subseq(dss, start=-4)
+dss[1]
+dss[[1]]</pre>
+
+</article></slide><slide class=''><hgroup><h2>Back to the <code>BSgenome</code> objects</h2></hgroup><article  id="back-to-the-bsgenome-objects">
+
+<pre class = 'prettyprint lang-r'>BiocInstaller::biocLite(&quot;BSgenome.Hsapiens.UCSC.hg19&quot;)
+library(&quot;BSgenome.Hsapiens.UCSC.hg19&quot;)
+ls(2)</pre>
+
+<p>This package is &gt; 600Mb</p>
+
+<p>After loading, we can just call <code>Hsapiens</code> as the <code>BSgenome</code> object</p>
+
+</article></slide><slide class=''><hgroup><h2><code>BSgenome</code></h2></hgroup><article  id="bsgenome">
+
+<pre class = 'prettyprint lang-r'>seqNms &lt;- seqnames(Hsapiens)
+seqNms[1:5]
+seqLens &lt;- seqlengths(Hsapiens)
+seqLens[1:5]</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>BSgenome</code></h2></hgroup><article  id="bsgenome-1">
+
+<h3>Some commands to try</h3>
+
+<pre class = 'prettyprint lang-r'>Hsapiens
+length(Hsapiens)
+getSeq(Hsapiens, seqNms[1:2])
+Hsapiens[[&quot;chr1&quot;]]
+Hsapiens$chr1</pre>
+
+<p>NB: Apart from the <code>[[</code> method, you <strong>always</strong> need to call sequences by name</p>
+
+</article></slide><slide class=''><hgroup><h2><code>BSgenome</code></h2></hgroup><article  id="bsgenome-2">
+
+<p>Contain <code>XString</code> objects:<br/>- extensive suite of functions for searching &amp; pattern matching</p>
+
+<h3>Some more interesting commands</h3>
+
+<pre class = 'prettyprint lang-r'>pattern1 &lt;- DNAString(&quot;ACGGACCTAAT&quot;)
+matchPattern(pattern1, Hsapiens$chr1)
+vmatchPattern(pattern1, 
+              getSeq(Hsapiens, seqNms[1:5]))
+vcountPattern(pattern1, 
+              getSeq(Hsapiens, seqNms[1:5]),
+              max.mismatch = 1) 
+findPalindromes(Hsapiens$chr1, min.armlength = 50)</pre>
+
+</article></slide><slide class=''><hgroup><h2><code>BSgenome</code></h2></hgroup><article  id="bsgenome-3">
+
+<p>These objects are also well setup to interact with <code>TxDb</code> objects</p></article></slide>
 
 
   <slide class="backdrop"></slide>

@@ -309,3 +309,8 @@ gr <- ah[["AH51056"]]
 gr
 ```
 
+## orgDB Objects
+
+Organsim DB objects
+
+- Follow more of an SQL type search pattern
