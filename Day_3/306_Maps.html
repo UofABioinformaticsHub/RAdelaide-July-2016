@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>305: Genomic Ranges</title>
+  <title>Plotting Maps</title>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,7 +26,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: '305: Genomic Ranges',
+                title: 'Plotting Maps',
                         subtitle: 'RAdelaide 2016',
                 useBuilds: true,
         usePrettify: true,
@@ -112,210 +112,175 @@
           </hgroup>
   </slide>
 
-<slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Genomic Ranges</h2></hgroup><article  id="genomic-ranges">
+<slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Plotting Maps</h2></hgroup><article  id="plotting-maps">
 
-</article></slide><slide class=''><hgroup><h2>Packages for NGS Data</h2></hgroup><article  id="packages-for-ngs-data">
+</article></slide><slide class=''><hgroup><h2>Let&#39;s Setup The Workspace</h2></hgroup><article  id="lets-setup-the-workspace">
+
+<pre class = 'prettyprint lang-r'>install.packages(&quot;maps&quot;)</pre>
+
+<pre class = 'prettyprint lang-r'>library(maps)
+library(ggplot2)
+library(dplyr)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Getting the crude data</h2></hgroup><article  id="getting-the-crude-data">
+
+<p><code>ggplot2</code> has function <code>map_data()</code></p>
+
+<pre class = 'prettyprint lang-r'>world_map &lt;- map_data(&quot;world&quot;)</pre>
+
+<p>Let&#39;s check it out</p>
+
+<pre class = 'prettyprint lang-r'>head(world_map)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Getting the crude data</h2></hgroup><article  id="getting-the-crude-data-1">
+
+<p><strong>How big is the world map?</strong></p>
+
+<pre class = 'prettyprint lang-r'>dim(world_map)</pre>
+
+<p><strong>How much information is there for each region?</strong></p>
+
+<pre class = 'prettyprint lang-r'>table(world_map$region)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Getting Australian Data</h2></hgroup><article  id="getting-australian-data">
+
+<pre class = 'prettyprint lang-r'>aus_map &lt;- map_data(&quot;world&quot;, region = &quot;Australia&quot;)</pre>
+
+<p><strong>Now how much data do we have?</strong></p>
+
+<pre class = 'prettyprint lang-r'>dim(aus_map)</pre>
+
+<p>So this may be low resolution&#8230;</p>
+
+<pre class = 'prettyprint lang-r'>table(aus_map$subregion)</pre>
+
+<p><strong>Is that every region?</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Getting Australian Data</h2></hgroup><article  id="getting-australian-data-1">
+
+<pre class = 'prettyprint lang-r'>aus_map %&gt;%
+  mutate(naRegion = is.na(subregion)) %&gt;%
+  group_by(naRegion) %&gt;%
+  count()</pre>
+
+<p>So we have more data points without a <code>subregion</code> than with</p>
+
+<p>Here,the <code>group</code> column corresponds to the <code>subregion</code></p>
+
+<p>The mainland is <code>group == 40</code></p>
+
+</article></slide><slide class=''><hgroup><h2>Getting Australian Data</h2></hgroup><article  id="getting-australian-data-2">
+
+<pre class = 'prettyprint lang-r'>table(aus_map$group) %&gt;% sort()</pre>
+
+<pre class = 'prettyprint lang-r'>aus_map %&gt;%
+  filter(group == 40) %&gt;%
+  tbl_df()</pre>
+
+<p><strong>Any thoughts on what the <code>group</code> column does?</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Plotting the data</h2></hgroup><article  id="plotting-the-data">
+
+<p>Without Groups</p>
+
+<pre class = 'prettyprint lang-r'>ggplot(aus_map, aes(x = long, y = lat)) +
+  geom_polygon() </pre>
+
+<p>With Groups</p>
+
+<pre class = 'prettyprint lang-r'>ggplot(aus_map, aes(x = long, y = lat, group  = group)) +
+  geom_polygon() </pre>
+
+</article></slide><slide class=''><hgroup><h2>Plotting the data</h2></hgroup><article  id="plotting-the-data-1">
+
+<pre class = 'prettyprint lang-r'>ggplot(aus_map, aes(x = long, y = lat, 
+                    group  = group, fill = subregion)) +
+  geom_polygon() +
+  guides(fill = FALSE) + 
+  theme_bw()</pre>
+
+<p><strong>How can we zoom in?</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Zooming In</h2></hgroup><article  id="zooming-in">
+
+<pre class = 'prettyprint lang-r'>aus_map %&gt;%
+  filter(subregion == &quot;Tasmania&quot;) %&gt;%
+  ggplot(aes(x = long, y = lat, 
+                    group  = group, fill = as.factor(group))) +
+  geom_polygon() +
+  guides(fill = FALSE) + 
+  theme_bw()</pre>
+
+<p>It&#39;s low resolution&#8230;</p>
+
+</article></slide><slide class=''><hgroup><h2>Adding points </h2><h3> Arthur&#39;s Lake</h3></hgroup><article  id="adding-points-arthurs-lake">
+
+<p>This is at:</p>
 
 <ul>
-<li><code>ShortRead</code>
-
-<ul>
-<li>for reading/analysing FASTQ files</li>
-<li>also performs QC</li>
-</ul></li>
-<li><code>Rsamtools</code>
-
-<ul>
-<li>for processing SAM/BAM files</li>
-<li>more than a wrapper to <code>samtools</code></li>
-<li>Objects connect to <code>GRanges</code> objects</li>
-</ul></li>
+<li>146\(^{\circ}\) 54&#39; 36&quot; (Longitude)</li>
+<li>41\(^{\circ}\) 59&#39; 24&quot; (Latitude)</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>ShortRead</h2></hgroup><article  id="shortread">
+<pre class = 'prettyprint lang-r'>arthur &lt;- data_frame(long = 146 + 54/60 + 36/3600,
+                     lat = -41 - 59/60 - 24/3600, 
+                     group = NA,
+                     order = NA, 
+                     region = NA, 
+                     subregion = &quot;Arthur&#39;s Lake&quot;)</pre>
 
-<p>Numerous functions for handling <code>.fastq</code> files</p>
+</article></slide><slide class=''><hgroup><h2>Adding points </h2><h3> Arthur&#39;s Lake</h3></hgroup><article  id="adding-points-arthurs-lake-1">
+
+<pre class = 'prettyprint lang-r'>aus_map %&gt;%
+  filter(subregion == &quot;Tasmania&quot;) %&gt;%
+  ggplot(aes(x = long, y = lat, 
+                    group  = group, fill = as.factor(group))) +
+  geom_polygon() +
+  guides(fill = FALSE) + 
+  theme_bw() +
+  geom_point(aes(x = long,y = lat), data = arthur) +
+  geom_text(aes(x = long, y = lat, label = subregion), 
+            data = arthur,
+            nudge_y = 0.1) </pre>
+
+</article></slide><slide class=''><hgroup><h2>Adding &quot;Roads&quot;</h2></hgroup><article  id="adding-roads">
+
+<p>Let&#39;s make a pretend road</p>
+
+<pre class = 'prettyprint lang-r'>road &lt;- data_frame(long = c(146, 146.5, 146.8),
+                   lat = c(-43, -42.5, -42.3),
+                   group = NA,
+                   order = NA, 
+                   region = NA, 
+                   subregion = NA)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Adding Roads</h2></hgroup><article  id="adding-roads-1">
+
+<pre class = 'prettyprint lang-r'>aus_map %&gt;%
+  filter(subregion == &quot;Tasmania&quot;) %&gt;%
+  ggplot(aes(x = long, y = lat, 
+                    group  = group, fill = as.factor(group))) +
+  geom_polygon() +
+  # coord_map(&quot;mercator&quot;) +
+  guides(fill = FALSE) + 
+  theme_bw() +
+  geom_point(aes(x = long,y = lat), data = arthur) +
+  geom_text(aes(x = long, y = lat, label = subregion), 
+            data = arthur,
+            nudge_y = 0.1) +
+  geom_line(aes(x = long,y = lat), data = road)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Going Forward</h2></hgroup><article  id="going-forward">
 
 <ul>
-<li><p>Uses <code>Biostrings</code> classes</p></li>
-<li><p><code>DNAStringSet</code> for sequences</p></li>
-<li><p><code>BStringSet</code> for quality scores</p></li>
+<li>The key is finding high resolution co-ordinates</li>
+<li>Layering can be much more sophisticated</li>
+<li>States can be defined as groups (then fill them)</li>
 </ul>
 
-<p>Personally I can&#39;t see any advantage to the set of external tools</p>
+<p>Useful packages might be:<br/><code>mapdata</code>, <code>maptools</code></p>
 
-</article></slide><slide class=''><hgroup><h2>Rsamtools</h2></hgroup><article  id="rsamtools">
-
-<ul>
-<li>Built for integration with <code>GenomicRanges</code></li>
-<li>Very useful for dealing with NGS data
-
-<ul>
-<li>Particularly RNA-Seq</li>
-</ul></li>
-<li>Mainly built around handling <code>.bam</code> files</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-1">
-
-<p>Anchor point between different analytic requirements</p>
-
-<ul>
-<li>SNP data</li>
-<li>RNASeq data</li>
-<li>CLIP or other miRNA data</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>More SNP Data</h2></hgroup><article  id="more-snp-data">
-
-<p>In &quot;<code>Day 3/data</code>&quot;:</p>
-
-<ul>
-<li>This is a large simulated SNP dataset</li>
-<li>All we have is the genomic locations</li>
-<li>From the human autosomes (Chr1 - 22)</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>More SNP Data</h2></hgroup><article  id="more-snp-data-1">
-
-<p>Let&#39;s load the data so we can form a <code>GRanges</code> object</p>
-
-<p>Change into the &quot;<em>Day 3</em>&quot; directory</p>
-
-<pre class = 'prettyprint lang-r'>library(readr)
-snpFile &lt;- file.path(&quot;data&quot;, &quot;HsSNPs.csv&quot;)
-file.exists(snpFile)
-snps &lt;- read_csv(snpFile)</pre>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-2">
-
-<p>Load the important Bioconductor packages</p>
-
-<pre class = 'prettyprint lang-r'>library(GenomicRanges)
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene  </pre>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-3">
-
-<p>As we only have the autosomal SNPS:</p>
-
-<ul>
-<li>let&#39;s set this up as a <code>Seqinfo</code> object</li>
-<li>We&#39;ll need this when constructing our SNP <code>GRanges</code> object</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>autoSeq &lt;- list(seqlevels = seqlevels(txdb)[1:22])
-autoSeq$seqinfo &lt;- seqinfo(txdb)[autoSeq$seqlevels]</pre>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-4">
-
-<p>Now we have everything we need!</p>
-
-<pre class = 'prettyprint lang-r'>snpGR &lt;- GRanges(Rle(snps$Chr), 
-                 IRanges(snps$BP, end = snps$BP), 
-                 strand = &quot;*&quot;, 
-                 seqinfo = autoSeq$seqinfo)</pre>
-
-<p>We can explore this using <code>length()</code>, <code>seqlengths()</code>, <code>seqlevels()</code> etc.</p>
-
-<pre class = 'prettyprint lang-r'>head(start(snpGR))</pre>
-
-</article></slide><slide class=''><hgroup><h2>What do we do now?</h2></hgroup><article  id="what-do-we-do-now">
-
-<ol>
-<li>Let&#39;s find how many SNPs we have on each chromosome
-
-<ul>
-<li>form a GRanges object for entire chromosome, THEN</li>
-<li>count the overlaps between the two GRanges objects</li>
-</ul></li>
-</ol>
-
-<pre class = 'prettyprint lang-r'>autosomes &lt;- GRanges(Rle(autoSeq$seqlevels), 
-                    IRanges(1, seqlengths(autoSeq$seqinfo)), 
-                    strand = &quot;*&quot;, 
-                    seqinfo = autoSeq$seqinfo)</pre>
-
-</article></slide><slide class=''><hgroup><h2><code>countOverlaps()</code></h2></hgroup><article  id="countoverlaps">
-
-<p>Now we have our two <code>GRanges</code> objects</p>
-
-<pre class = 'prettyprint lang-r'>snpPerChrom &lt;- countOverlaps(autosomes, snpGR, type=&quot;any&quot;)
-names(snpPerChrom) &lt;- seqlevels(autosomes)</pre>
-
-<ol>
-<li>Check the help page using <code>?countOverlaps</code></li>
-</ol>
-
-</article></slide><slide class=''><hgroup><h2>`Genomic Ranges</h2></hgroup><article  id="genomic-ranges-5">
-
-<p>Now the fun stuff:</p>
-
-<ul>
-<li>How do we find if any SNPs overlap genes?</li>
-<li>What about introns/exons?</li>
-<li>Promoters? CDS?</li>
-<li>Whichever way you want to subset the genome&#8230;</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-6">
-
-<p>Let&#39;s look by gene first</p>
-
-<p>Define a gene as the range between the start &amp; end points of all transcripts</p>
-
-<pre class = 'prettyprint lang-r'>txGRL &lt;- transcriptsBy(txdb, &quot;gene&quot;)
-gnGRL &lt;- range(txGRL)</pre>
-
-<p>This time we have <code>GRangesList</code> objects as both objects</p>
-
-</article></slide><slide class=''><hgroup><h2><code>GenomicRanges</code></h2></hgroup><article  id="genomicranges">
-
-<p>Now we can find the overlaps</p>
-
-<pre class = 'prettyprint lang-r'>gnOverlaps &lt;- countOverlaps(gnGRL, snpGR)
-gnOverlaps &lt;- gnOverlaps[gnOverlaps &gt; 0]</pre>
-
-<h3>How do we find that how many genes have SNPs?</h3>
-
-<h3>Would each SNP be counted once?</h3>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-7">
-
-<p>Now we can find the overlaps looking the other way</p>
-
-<pre class = 'prettyprint lang-r'>snpGnOverlaps &lt;- countOverlaps(snpGR, gnGRL)
-snpGnOverlaps &lt;- snpGnOverlaps[snpGnOverlaps &gt; 0]</pre>
-
-<h3>Now we can see how many SNPs overlap genes</h3>
-
-<p><em>(Perhaps I should&#39;ve simulated my data better&#8230;)</em></p>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-8">
-
-<p>We can find the actual mappings from SNP to gene</p>
-
-<pre class = 'prettyprint lang-r'>mapSnpGns &lt;- findOverlaps(snpGR,gnGRL)</pre>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-9">
-
-<p>There&#39;s an even shorter way to count SNP hits for exons</p>
-
-<pre class = 'prettyprint lang-r'>exBySNP &lt;- exonsByOverlaps(txdb, snpGR)</pre>
-
-<p>And CDS</p>
-
-<pre class = 'prettyprint lang-r'>cdsBySNP &lt;- cdsByOverlaps(txdb, snpGR)</pre>
-
-</article></slide><slide class=''><hgroup><h2><code>Genomic Ranges</code></h2></hgroup><article  id="genomic-ranges-10">
-
-<p>SNPs are pretty easy</p>
-
-<ul>
-<li>They all have a width of 1</li>
-<li>Overlaps are very simple to define</li>
-<li>RNASeq reads are more complex</li>
-</ul></article></slide>
+<p>-<code>maptools</code> can import Esri shapefiles.</p></article></slide>
 
 
   <slide class="backdrop"></slide>

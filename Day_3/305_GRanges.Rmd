@@ -1,6 +1,6 @@
 ---
 title: "305: Genomic Ranges"
-ubtitle: "RAdelaide 2016"
+subtitle: "RAdelaide 2016"
 author: "Steve Pederson"
 date: "22 July 2016"
 output: 
