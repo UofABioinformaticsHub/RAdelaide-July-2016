@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>302: biomaRt</title>
+  <title>302: Annotations</title>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,7 +26,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: '302: biomaRt',
+                title: '302: Annotations',
                         subtitle: 'RAdelaide 2016',
                 useBuilds: true,
         usePrettify: true,
@@ -243,7 +243,143 @@ test &lt;- getBM(attributes = attr,
 <ul>
 <li>Known as the <code>namespace</code></li>
 <li><code>dplyr::select()</code> or <code>biomaRt::select()</code></li>
-</ul></article></slide>
+</ul>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub">
+
+</article></slide><slide class=''><hgroup><h2>AnnotationData</h2></hgroup><article  id="annotationdata">
+
+<p>This session relies heavily on material from</p>
+
+<p><strong>Annotation Resources</strong></p>
+
+<p>Authors: Marc RJ Carlson, Herve Pages, Sonali Arora, Valerie Obenchain, and Martin Morgan</p>
+
+<p>Presented at BioC2015 July 20-22, Seattle, WA</p>
+
+<p><a href='https://github.com/mrjc42/BiocAnnotRes2015' title=''>https://github.com/mrjc42/BiocAnnotRes2015</a></p>
+
+</article></slide><slide class=''><hgroup><h2>AnnotationData</h2></hgroup><article  id="annotationdata-1">
+
+<p>Four common classes of annotation</p>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">Object type</th>
+<th align="left">contents</th>
+</tr>
+<tr class="odd">
+<td align="left">OrgDb</td>
+<td align="left">gene based information</td>
+</tr>
+<tr class="even">
+<td align="left">BSgenome</td>
+<td align="left">genome sequence</td>
+</tr>
+<tr class="odd">
+<td align="left">TxDb</td>
+<td align="left">transcriptome ranges</td>
+</tr>
+<tr class="even">
+<td align="left">OrganismDb</td>
+<td align="left">composite information</td>
+</tr>
+</table>
+
+</article></slide><slide class=''><hgroup><h2>AnnotationHub</h2></hgroup><article  id="annotationhub">
+
+<pre class = 'prettyprint lang-r'>library(AnnotationHub)
+ah &lt;- AnnotationHub()</pre>
+
+<ul>
+<li>This is a relatively new &amp; sensibly named package</li>
+<li>We can access &amp; find numerous annotation types</li>
+<li>Uses <code>SQL</code>-type methods</li>
+<li>Creating this object will create a cache with the latest metadata from each data source</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-1">
+
+<p>Get a summary:</p>
+
+<pre class = 'prettyprint lang-r'>ah</pre>
+
+<p>This is another <code>S4</code> object</p>
+
+<ul>
+<li>3 important components: <code>$dataprovider</code>, <code>$species</code> &amp; <code>$rdataclass</code></li>
+<li>additional components listed under <code>additional mcols()</code> can also be accessed with the <code>$</code></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-2">
+
+<p>We can find the data providers</p>
+
+<pre class = 'prettyprint lang-r'>unique(ah$dataprovider) </pre>
+
+<p>Or the different data classes in the hub</p>
+
+<pre class = 'prettyprint lang-r'>unique(ah$rdataclass) </pre>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-3">
+
+<p>We can find the species with annotations</p>
+
+<pre class = 'prettyprint lang-r'>sp &lt;- unique(ah$species)
+head(sp)
+length(sp)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-4">
+
+<p>We can <code>query</code> for matches to any term, e.g. to look for rabbit (<em>Oryctolagus cuniculus</em>) annotation sources</p>
+
+<pre class = 'prettyprint lang-r'>query(ah, &quot;Oryctolagus&quot;)</pre>
+
+<p>We can create smaller <code>AnnotationHub</code> objects, which we could then search again</p>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-5">
+
+<p>We can subset easily</p>
+
+<pre class = 'prettyprint lang-r'>subset(ah, rdataclass==&quot;GRanges&quot;)</pre>
+
+<p>Or if we know we want the <code>GRanges</code> annotations for the rabbit</p>
+
+<pre class = 'prettyprint lang-r'>subset(query(ah, &quot;Oryctolagus&quot;), rdataclass==&quot;GRanges&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-6">
+
+<p>Or we can combine multiple search queries</p>
+
+<p>Fetch the rabbit annotations, which are <code>GRanges</code> objects derived from <code>Ensembl</code></p>
+
+<pre class = 'prettyprint lang-r'>query(ah, 
+      pattern=c(&quot;Oryctolagus&quot;, &quot;GRanges&quot;, &quot;Ensembl&quot;))</pre>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-7">
+
+<p>We can find the metadata for the whole object, or any subset we&#39;ve created</p>
+
+<pre class = 'prettyprint lang-r'>meta &lt;- mcols(ah)
+meta</pre>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-8">
+
+<p>There&#39;s even a GUI</p>
+
+<pre class = 'prettyprint lang-r'>display(ah)</pre>
+
+<ul>
+<li>You may need to resize the <strong>Viewer</strong> window</li>
+<li>Return an <code>AnnotationHub()</code> to R by selecting a row &amp; clicking the button</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Annotation Hub</h2></hgroup><article  id="annotation-hub-9">
+
+<p>Once we have the specific annotation we&#39;re interested in: - subset using the name &amp; the double bracket method - this loads the <code>AnnotationData</code> object into your workspace</p>
+
+<pre class = 'prettyprint lang-r'>gr &lt;- ah[[&quot;AH51056&quot;]]
+gr</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

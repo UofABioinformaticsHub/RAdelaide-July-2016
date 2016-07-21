@@ -261,6 +261,8 @@ Look and behave very similarly, but can trip you over
 
 - Object may require a `DataFrame` and you give it a `data.frame`
 
+# Variations on the `data.frame` theme
+
 ## Variations on the `data.frame` theme
 
 - `data.frame`

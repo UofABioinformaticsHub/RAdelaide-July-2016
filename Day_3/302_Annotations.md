@@ -1,4 +1,4 @@
-# 302: biomaRt
+# 302: Annotations
 Steve Pederson  
 22 July 2016  
 
@@ -154,4 +154,156 @@ The specific version of a function can be called by using the package name
 
 - Known as the `namespace`
 - `dplyr::select()` or `biomaRt::select()`
+
+# Annotation Hub
+
+## AnnotationData
+
+This session relies heavily on material from
+
+**Annotation Resources**
+
+Authors: Marc RJ Carlson, Herve Pages, Sonali Arora, Valerie Obenchain, and Martin Morgan
+
+Presented at BioC2015 July 20-22, Seattle, WA
+
+https://github.com/mrjc42/BiocAnnotRes2015
+
+## AnnotationData
+
+Four common classes of annotation
+
+Object type |contents
+-------------|---------------------------
+OrgDb | gene based information
+BSgenome | genome sequence
+TxDb  | transcriptome ranges
+OrganismDb | composite information
+
+## AnnotationHub
+
+
+```r
+library(AnnotationHub)
+ah <- AnnotationHub()
+```
+
+- This is a relatively new & sensibly named package
+- We can access & find numerous annotation types
+- Uses `SQL`-type methods
+- Creating this object will create a cache with the latest metadata from each data source
+
+## Annotation Hub
+
+Get a summary:
+
+
+```r
+ah
+```
+
+This is another `S4` object
+
+- 3 important components: `$dataprovider`, `$species` & `$rdataclass`
+- additional components listed under `additional mcols()` can also be accessed with the `$`
+
+## Annotation Hub
+
+We can find the data providers
+
+
+```r
+unique(ah$dataprovider) 
+```
+
+Or the different data classes in the hub
+
+
+```r
+unique(ah$rdataclass) 
+```
+
+## Annotation Hub
+
+We can find the species with annotations
+
+
+```r
+sp <- unique(ah$species)
+head(sp)
+length(sp)
+```
+
+## Annotation Hub
+
+We can `query` for matches to any term, e.g. to look for rabbit (*Oryctolagus cuniculus*) annotation sources
+
+
+```r
+query(ah, "Oryctolagus")
+```
+
+We can create smaller `AnnotationHub` objects, which we could then search again
+
+## Annotation Hub
+
+We can subset easily
+
+
+```r
+subset(ah, rdataclass=="GRanges")
+```
+
+Or if we know we want the `GRanges` annotations for the rabbit
+
+
+```r
+subset(query(ah, "Oryctolagus"), rdataclass=="GRanges")
+```
+
+## Annotation Hub
+
+Or we can combine multiple search queries
+
+Fetch the rabbit annotations, which are `GRanges` objects derived from `Ensembl`
+
+
+```r
+query(ah, 
+      pattern=c("Oryctolagus", "GRanges", "Ensembl"))
+```
+
+## Annotation Hub
+
+We can find the metadata for the whole object, or any subset we've created
+
+
+```r
+meta <- mcols(ah)
+meta
+```
+
+## Annotation Hub
+
+There's even a GUI
+
+
+```r
+display(ah)
+```
+
+- You may need to resize the **Viewer** window
+- Return an `AnnotationHub()` to R by selecting a row & clicking the button
+
+## Annotation Hub
+
+Once we have the specific annotation we're interested in:
+- subset using the name & the double bracket method
+- this loads the `AnnotationData` object into your workspace
+
+
+```r
+gr <- ah[["AH51056"]]
+gr
+```
 
