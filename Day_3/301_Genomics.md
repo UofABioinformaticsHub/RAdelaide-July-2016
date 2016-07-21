@@ -36,6 +36,11 @@ e.g. a `data_frame`, `tbl_df` or `tibble`
 
 ## The Bioconductor Project
 
+<img src="images/bioC.png" width="750" style="display: block; margin: auto;" />
+
+
+## The Bioconductor Project
+
 
 ```r
 browseVignettes()
